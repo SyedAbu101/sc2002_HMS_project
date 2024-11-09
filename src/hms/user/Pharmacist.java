@@ -52,7 +52,8 @@ public class Pharmacist extends User {
             System.out.println("2. Update Prescription Status");
             System.out.println("3. View Medication Inventory");
             System.out.println("4. Submit Replenishment Request");
-            System.out.println("5. Logout");
+            System.out.println("5. Change Password");
+            System.out.println("6. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -88,6 +89,11 @@ public class Pharmacist extends User {
                     submitReplenishmentRequest(medicineName, quantity);
                     break;
                 case 5:
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    changePassword(newPassword);
+                    break;
+                case 6:
                     System.out.println("Logging out...");
                     return;
                 default:

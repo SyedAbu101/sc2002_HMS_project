@@ -9,18 +9,31 @@ public class Patient extends User {
     private String dateOfBirth;
     private String gender;
     private ContactInfo contactInfo;
+    private String bloodType;
+    private List<String> pastDiagnosesAndTreatments;
     private AppointmentManager appointmentManager;
 
     //constructor
-    public Patient(String id, String name) {
+    public Patient(String id, String name, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo) {
         super(id, name, "patient");
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.bloodType = bloodType;
+        this.contactInfo = contactInfo;
         this.appointmentManager = new AppointmentManager();
     }
 
     //viewMedicalRecord method
     public void viewMedicalRecord() {
         System.out.println("Medical Record for Patient: " + name);
+        System.out.println("Patient ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + dateOfBirth);
+        System.out.println("Gender: " + gender);
+        System.out.println("Contact Information: " + contactInfo);
+        System.out.println("Blood Type: " + bloodType);
         //need to use getMedicalRecordByPatientId method in AppointmentManager.java
+
     }
 
     //updatePersonalInfo method
@@ -100,7 +113,8 @@ public class Patient extends User {
             System.out.println("6. Cancel an Appointment");
             System.out.println("7. View Scheduled Appointments");
             System.out.println("8. View Past Appointment Outcomes");
-            System.out.println("9. Logout");
+            System.out.println("9. Change Password");
+            System.out.println("10. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -150,6 +164,11 @@ public class Patient extends User {
                     viewPastAppointmentOutcomes();
                     break;
                 case 9:
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    changePassword(newPassword);
+                    break;
+                case 10:
                     System.out.println("Logging out...");
                     return;
                 default:

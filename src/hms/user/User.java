@@ -1,5 +1,7 @@
 package hms.user;
 
+import hms.util.ContactInfo;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -47,10 +49,10 @@ public abstract class User {
     public abstract void showMenu();
 
     //method for creating new users
-    public static User createUser(String id, String name, String role) {
+    public static User createUser(String id, String name, String role, String dateOfBirth, String gender, String bloodType,  ContactInfo contactInfo) {
         switch (role.toLowerCase()) {
             case "patient":
-                return new Patient(id, name);
+                return new Patient(id, name, dateOfBirth, gender, bloodType, contactInfo);
             case "doctor":
                 return new Doctor(id, name);
             case "pharmacist":
@@ -73,23 +75,26 @@ public abstract class User {
                 }
 
                 String[] details = line.split(",");
-                if (details.length < 3) {
+                if (details.length == 7) {
+                    // Patient data
+                    String id = details[0].trim();
+                    String name = details[1].trim();
+                    String dateOfBirth = details[2].trim();
+                    String gender = details[3].trim();
+                    String bloodType = details[4].trim();
+                    ContactInfo contactInfo = new ContactInfo(details[5].trim());
+                    createUser(id, name, "patient", dateOfBirth, gender, bloodType, contactInfo);
+                } else if (details.length == 6) {
+                    // Staff data
+                    String id = details[0].trim();
+                    String name = details[1].trim();
+                    String role = details[2].trim();
+                    createUser(id, name, role, "", "","", null);
+                } else {
                     System.out.println("Invalid entry in CSV: " + line);
-                    continue;
-                }
-
-                String id = details[0].trim();
-                String name = details[1].trim();
-                String role = details[2].trim();
-
-                try {
-                    createUser(id, name, role);
-                    //System.out.println("Loaded User: ID = " + id + ", Name = " + name + ", Role = " + role);
-                } catch (IllegalArgumentException e) {
-                    //System.out.println("Error creating user: " + e.getMessage());
                 }
             }
-            //System.out.println("Users loaded successfully from CSV file.");
+            System.out.println("Users loaded successfully from CSV file.");
         } catch (IOException e) {
             System.out.println("Error reading CSV file: " + e.getMessage());
         }
@@ -98,6 +103,8 @@ public abstract class User {
     public static void main(String[] args) {
         String dataPath = "data/Staff_List.csv";
         loadUsersFromCsv(dataPath);
+        String patientPath = "data/Patient_List.csv";
+        loadUsersFromCsv(patientPath);
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter ID: ");

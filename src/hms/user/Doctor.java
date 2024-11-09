@@ -83,7 +83,8 @@ public class Doctor extends User {
             System.out.println("4. Set Availability for Appointments");
             System.out.println("5. Accept or Decline Appointment Requests");
             System.out.println("6. Record Appointment Outcome");
-            System.out.println("7. Logout");
+            System.out.println("7. Change Password");
+            System.out.println("8. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -134,6 +135,11 @@ public class Doctor extends User {
                     recordAppointmentOutcome(appointmentId, serviceType, medicationName, notes);
                     break;
                 case 7:
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    changePassword(newPassword);
+                    break;
+                case 8:
                     System.out.println("Logging out...");
                     return;
                 default:

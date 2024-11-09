@@ -55,7 +55,8 @@ public class Administrator extends User {
             System.out.println("2. View Appointments Details");
             System.out.println("3. View Medication Inventory");
             System.out.println("4. Approve Replenishment Requests");
-            System.out.println("5. Logout");
+            System.out.println("5. Change Password");
+            System.out.println("6. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -75,6 +76,11 @@ public class Administrator extends User {
                     approveReplenishmentRequests();
                     break;
                 case 5:
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    changePassword(newPassword);
+                    break;
+                case 6:
                     System.out.println("Logging out...");
                     return;
                 default:

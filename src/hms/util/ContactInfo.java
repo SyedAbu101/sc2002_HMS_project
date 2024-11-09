@@ -10,6 +10,10 @@ public class ContactInfo {
         this.phone = phone;
     }
 
+    public ContactInfo(String email) {
+        this.email = email;
+    }
+
     //get methods
     public String getEmail() {
         return email;
