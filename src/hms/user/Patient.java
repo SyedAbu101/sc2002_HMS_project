@@ -106,7 +106,7 @@ public class Patient extends User {
         }
     }
 
-    //showMenu method, need to ass more options to include changing of password
+    //showMenu method, need to add more options to include changing of password
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
