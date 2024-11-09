@@ -1,0 +1,5 @@
+﻿Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Password,Past Diagnoses and Treatments,Security Question,Security Answer
+P1001,Alice Brown,5/14/80,Female,A+,alice.brown@example.com,password,Hypertension;Diabetes,Favourite colour,Red
+P1002,Bob Stone,11/22/75,Male,B+,bob.stone@example.com,password,Asthma;Allergies,Pet's name,Woofy
+P1003,Charlie White,07/08/1990,Male,O-,charlie.white@example.com,password,Fracture;Flu,Favourite food,Chicken
+P1004,Dave Green,03/12/1985,Male,B+,dave.green@example.com,password,Depression;Anxiety,Favourite food,Rice

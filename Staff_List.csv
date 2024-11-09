@@ -1,0 +1,5 @@
+﻿Staff ID,Name,Role,Gender,Age,Password,Security Question,Security Answer
+D001,John Smith,Doctor,Male,45,password,Favourite colour,Red
+D002,Emily Clarke,Doctor,Female,38,password,Pet's name,Meowy
+P001,Mark Lee,Pharmacist,Male,29,password,Favourite food,Prata
+A001,Sarah Lee,Administrator,Female,40,password,Favourite food,Eggs
