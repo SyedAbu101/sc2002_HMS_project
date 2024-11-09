@@ -2,13 +2,37 @@ package hms.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class InventoryManager {
     private List<Medicine> medicines;
 
     //constructor
     public InventoryManager() {
-        this.medicines = new ArrayList<>();
+        this.medicines = loadMedicinesFromCSV("src/hms/data/Medicine_List.csv");
+    }
+
+    // Method to read medicines from a CSV file
+    private List<Medicine> loadMedicinesFromCSV(String filePath) {
+        List<Medicine> medicinesList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            boolean isFirstLine = true;
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                Medicine medicine = Medicine.fromCSV(line);
+                medicinesList.add(medicine);
+            }
+            System.out.println("Medicines loaded successfully from " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error reading the CSV file: " + e.getMessage());
+        }
+        return medicinesList;
     }
 
     //addMedicine method

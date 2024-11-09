@@ -34,4 +34,30 @@ public class Medicine {
     public String toString() {
         return "Medicine Name: " + name + ", Stock: " + stock + ", Low Stock Alert Level: " + lowStockAlertLevel;
     }
+
+    // Static method to create a Medicine instance from a CSV row
+    public static Medicine fromCSV(String csvRow) {
+        int stock;
+        int lowStockAlertLevel;;
+        String[] data = csvRow.split(",");
+
+        if (data.length < 3) {
+            throw new IllegalArgumentException("Invalid CSV row: " + csvRow);
+        }
+
+        String name = data[0];
+
+        try {
+            stock = Integer.parseInt(data[1]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid stock value in CSV row: " + csvRow, e);
+        }
+
+        try {
+            lowStockAlertLevel = Integer.parseInt(data[2]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid low stock alert level in CSV row: " + csvRow, e);
+        }
+        return new Medicine(name, stock, lowStockAlertLevel);
+    }
 }

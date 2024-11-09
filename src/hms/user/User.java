@@ -111,9 +111,9 @@ public abstract class User {
     }
 
     public static void main(String[] args) {
-        String dataPath = "data/Staff_List.csv";
+        String dataPath = "src/hms/data/Staff_List.csv";
         loadUsersFromCsv(dataPath);
-        String patientPath = "data/Patient_List.csv";
+        String patientPath = "src/hms/data/Patient_List.csv";
         loadUsersFromCsv(patientPath);
 
         Scanner scanner = new Scanner(System.in);
