@@ -13,13 +13,15 @@ public class Patient extends User {
     private List<String> pastDiagnosesAndTreatments;
     private AppointmentManager appointmentManager;
 
+
     //constructor
-    public Patient(String id, String name, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo) {
+    public Patient(String id, String name, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo, List<String> pastDiagnosesAndTreatments) {
         super(id, name, "patient");
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.bloodType = bloodType;
         this.contactInfo = contactInfo;
+        this.pastDiagnosesAndTreatments = pastDiagnosesAndTreatments;
         this.appointmentManager = new AppointmentManager();
     }
 
@@ -32,6 +34,10 @@ public class Patient extends User {
         System.out.println("Gender: " + gender);
         System.out.println("Contact Information: " + contactInfo);
         System.out.println("Blood Type: " + bloodType);
+        System.out.println("Past Diagnoses and Treatments:");
+        for (String diagnosis : pastDiagnosesAndTreatments) {
+            System.out.println("- " + diagnosis);
+        }
         //need to use getMedicalRecordByPatientId method in AppointmentManager.java
 
     }
@@ -125,6 +131,7 @@ public class Patient extends User {
                     viewMedicalRecord();
                     break;
                 case 2:
+                    System.out.println("Update Personal Information (Enter Null to delete):");
                     System.out.print("Enter new email: ");
                     String email = scanner.nextLine();
                     System.out.print("Enter new phone number: ");
@@ -137,6 +144,12 @@ public class Patient extends User {
                 case 4:
                     System.out.print("Enter Doctor ID: ");
                     String doctorId = scanner.nextLine();
+                    User doctor = User.getUserById(doctorId);
+                    while (doctor == null) {
+                        System.out.print("Doctor ID doesnt exist. Please enter again:");
+                        doctorId = scanner.nextLine();
+                        doctor = User.getUserById(doctorId);
+                    }
                     System.out.print("Enter Appointment Date (YYYY-MM-DD): ");
                     String date = scanner.nextLine();
                     System.out.print("Enter Appointment Time (HH:MM): ");

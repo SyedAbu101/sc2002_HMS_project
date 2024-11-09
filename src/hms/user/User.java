@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -26,7 +27,11 @@ public abstract class User {
         userDatabase.put(id, this);
     }
 
-    
+
+    public static User getUserById(String id) {
+        return userDatabase.get(id);
+    }
+
     public static User login(String id, String password) {
         User user = userDatabase.get(id);
         if (user != null && user.password.equals(password)) {
@@ -49,10 +54,10 @@ public abstract class User {
     public abstract void showMenu();
 
     //method for creating new users
-    public static User createUser(String id, String name, String role, String dateOfBirth, String gender, String bloodType,  ContactInfo contactInfo) {
+    public static User createUser(String id, String name, String role, String dateOfBirth, String gender, String bloodType,  ContactInfo contactInfo, List<String> pastDiagnosesAndTreatments) {
         switch (role.toLowerCase()) {
             case "patient":
-                return new Patient(id, name, dateOfBirth, gender, bloodType, contactInfo);
+                return new Patient(id, name, dateOfBirth, gender, bloodType, contactInfo,pastDiagnosesAndTreatments);
             case "doctor":
                 return new Doctor(id, name);
             case "pharmacist":
@@ -75,21 +80,26 @@ public abstract class User {
                 }
 
                 String[] details = line.split(",");
-                if (details.length == 7) {
+                if (details.length == 8) {
                     // Patient data
                     String id = details[0].trim();
                     String name = details[1].trim();
                     String dateOfBirth = details[2].trim();
                     String gender = details[3].trim();
                     String bloodType = details[4].trim();
-                    ContactInfo contactInfo = new ContactInfo(details[5].trim());
-                    createUser(id, name, "patient", dateOfBirth, gender, bloodType, contactInfo);
+                    ContactInfo contactInfo = new ContactInfo(details[5].trim()); // Assuming email only for now
+                    String password = details[6].trim();
+                    List<String> pastDiagnosesAndTreatments = List.of(details[7].trim().split(";")); // Assuming semicolon-separated diagnoses and treatments
+                    User user = createUser(id, name, "patient", dateOfBirth, gender, bloodType, contactInfo, pastDiagnosesAndTreatments);
                 } else if (details.length == 6) {
                     // Staff data
                     String id = details[0].trim();
                     String name = details[1].trim();
                     String role = details[2].trim();
-                    createUser(id, name, role, "", "","", null);
+                    String gender = details[3].trim();
+                    String age = details[4].trim();
+                    String password = details[5].trim();
+                    User user = createUser(id, name, role, "", gender, "", null, null);
                 } else {
                     System.out.println("Invalid entry in CSV: " + line);
                 }
