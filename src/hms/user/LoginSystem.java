@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class LoginSystem {
     public static void main(String[] args) {
-        String staffPath = "data/Staff_List.csv";
-        String patientPath = "data/Patient_List.csv";
+        String staffPath = "src/hms/data/Staff_List.csv";
+        String patientPath = "src/hms/data/Patient_List.csv";
         User.loadUsersFromCsv(staffPath);
         User.loadUsersFromCsv(patientPath);
 
