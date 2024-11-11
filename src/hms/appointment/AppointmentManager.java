@@ -1,5 +1,9 @@
 package hms.appointment;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import hms.medical.MedicalRecord;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +76,26 @@ public class AppointmentManager implements AppointmentService {
     public List<Appointment> getAppointmentsByDoctorId(String doctorId) {
         return appointments.stream()
                 .filter(appointment -> appointment.getDoctorId().equals(doctorId))
+                .collect(Collectors.toList());
+    }
+
+    //getFutureAppointmentsByDoctorId method
+    public List<Appointment> getFutureAppointmentsByDoctorId(String doctorId) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        return appointments.stream()
+                .filter(appointment -> appointment.getDoctorId().equals(doctorId))
+                .filter(appointment -> {
+
+                    // Parse date and time strings
+                    LocalDate appointmentDate = LocalDate.parse(appointment.getDate(), dateFormatter);
+                    LocalTime appointmentTime = LocalTime.parse(appointment.getTime(), timeFormatter);
+
+                    // Combine appointment date and time to form a LocalDateTime for comparison
+                    LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, appointmentTime);
+                    return appointmentDateTime.isAfter(now);
+                })
                 .collect(Collectors.toList());
     }
 

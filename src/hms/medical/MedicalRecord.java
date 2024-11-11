@@ -9,11 +9,14 @@ public class MedicalRecord {
     private List<String> diagnoses;
     private List<String> treatments;
 
+    private List<String> prescriptions;
+
     //constructor
     public MedicalRecord(String patientId) {
         this.patientId = patientId;
         this.diagnoses = new ArrayList<>();
         this.treatments = new ArrayList<>();
+        this.prescriptions = new ArrayList<>();
     }
 
     //get methods
@@ -31,6 +34,10 @@ public class MedicalRecord {
     
     public List<String> getTreatments() {
         return new ArrayList<>(treatments);
+    }
+
+    public List<String> getPrescriptions() {
+        return new ArrayList<>(prescriptions);
     }
     
     //set methods
@@ -50,6 +57,12 @@ public class MedicalRecord {
         System.out.println("Treatment added successfully.");
     }
 
+    //addPrescription method
+    public void addPrescription(String prescription) {
+        treatments.add(prescription);
+        System.out.println("Prescription added successfully.");
+    }
+
     //display method
     public void display() {
         System.out.println("Medical Record for Patient ID: " + patientId);
@@ -61,6 +74,10 @@ public class MedicalRecord {
         System.out.println("Treatments:");
         for (String treatment : treatments) {
             System.out.println("- " + treatment);
+        }
+        System.out.println("Prescription:");
+        for (String prescription : prescriptions) {
+            System.out.println("- " + prescription);
         }
     }
 }

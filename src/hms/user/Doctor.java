@@ -26,12 +26,13 @@ public class Doctor extends User {
     }
 
     //updateMedicalRecord method
-    public void updateMedicalRecord(String patientId, String newDiagnosis, String newTreatment) {
+    public void updateMedicalRecord(String patientId, String newDiagnosis, String newPrescription, String newTreatment) {
         System.out.println("Updating Medical Record for Patient ID: " + patientId);
         MedicalRecord record = appointmentManager.getMedicalRecordByPatientId(patientId);
         if (record != null) {
             record.addDiagnosis(newDiagnosis);
             record.addTreatment(newTreatment);
+            record.addPrescription(newPrescription);
             System.out.println("Medical record updated successfully.");
         } else {
             System.out.println("No medical record found for Patient ID: " + patientId);
@@ -65,6 +66,14 @@ public class Doctor extends User {
         }
     }
 
+    public void viewUpcomingAppointments(){
+        System.out.println("Upcoming Appointment for Dr. " + name + ":");
+        List<Appointment> appointments = appointmentManager.getFutureAppointmentsByDoctorId(id);
+        for (Appointment appointment : appointments) {
+            System.out.println(appointment);
+        }
+    }
+
     //recordAppointmentOutcome method
     public void recordAppointmentOutcome(String appointmentId, String serviceType, String medicationName, String notes) {
         System.out.println("Recording outcome for Appointment ID: " + appointmentId);
@@ -82,9 +91,10 @@ public class Doctor extends User {
             System.out.println("3. View Personal Schedule");
             System.out.println("4. Set Availability for Appointments");
             System.out.println("5. Accept or Decline Appointment Requests");
-            System.out.println("6. Record Appointment Outcome");
-            System.out.println("7. Change Password");
-            System.out.println("8. Logout");
+            System.out.println("6. View Upcoming Appointments");
+            System.out.println("7. Record Appointment Outcome");
+            System.out.println("8. Change Password");
+            System.out.println("9. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -101,9 +111,11 @@ public class Doctor extends User {
                     patientId = scanner.nextLine();
                     System.out.print("Enter new diagnosis: ");
                     String newDiagnosis = scanner.nextLine();
+                    System.out.println("Enter new prescription: ");
+                    String newPrescription = scanner.nextLine();
                     System.out.print("Enter new treatment: ");
                     String newTreatment = scanner.nextLine();
-                    updateMedicalRecord(patientId, newDiagnosis, newTreatment);
+                    updateMedicalRecord(patientId, newDiagnosis, newPrescription, newTreatment);
                     break;
                 case 3:
                     viewPersonalSchedule();
