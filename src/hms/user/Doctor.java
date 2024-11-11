@@ -9,8 +9,8 @@ public class Doctor extends User {
     private AppointmentManager appointmentManager;
 
     //constructor
-    public Doctor(String id, String name) {
-        super(id, name, "doctor");
+    public Doctor(String id, String name, String password, String securityQuestion, String securityAnswer) {
+        super(id, name, "doctor", password, securityQuestion, securityAnswer);
         this.appointmentManager = new AppointmentManager();
     }
     

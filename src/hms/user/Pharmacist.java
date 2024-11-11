@@ -9,8 +9,8 @@ public class Pharmacist extends User {
     private InventoryManager inventoryManager;
 
     //constructor
-    public Pharmacist(String id, String name) {
-        super(id, name, "pharmacist");
+    public Pharmacist(String id, String name, String password, String securityQuestion, String securityAnswer) {
+        super(id, name, "pharmacist", password, securityQuestion, securityAnswer);
         this.inventoryManager = new InventoryManager();
     }
     

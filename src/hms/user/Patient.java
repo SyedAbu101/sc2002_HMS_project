@@ -15,8 +15,8 @@ public class Patient extends User {
 
 
     //constructor
-    public Patient(String id, String name, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo, List<String> pastDiagnosesAndTreatments) {
-        super(id, name, "patient");
+    public Patient(String id, String name, String password, String securityQuestion, String securityAnswer, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo, List<String> pastDiagnosesAndTreatments) {
+        super(id, name, "patient", password, securityQuestion, securityAnswer);
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.bloodType = bloodType;

@@ -11,8 +11,8 @@ public class Administrator extends User {
     private AppointmentManager appointmentManager;
 
     //constructor
-    public Administrator(String id, String name) {
-        super(id, name, "administrator");
+    public Administrator(String id, String name, String password, String securityQuestion, String securityAnswer) {
+        super(id, name, "administrator", password, securityQuestion, securityAnswer);
         this.inventoryManager = new InventoryManager();
     }
 
