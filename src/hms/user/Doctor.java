@@ -136,6 +136,8 @@ public class Doctor extends User {
                     acceptOrDeclineAppointment(appointmentId, accept);
                     break;
                 case 6:
+                    viewUpcomingAppointments();
+                case 7:
                     System.out.print("Enter Appointment ID to record outcome: ");
                     appointmentId = scanner.nextLine();
                     System.out.print("Enter type of service provided: ");
@@ -146,12 +148,12 @@ public class Doctor extends User {
                     String notes = scanner.nextLine();
                     recordAppointmentOutcome(appointmentId, serviceType, medicationName, notes);
                     break;
-                case 7:
+                case 8:
                     System.out.print("Enter new password: ");
                     String newPassword = scanner.nextLine();
                     changePassword(newPassword);
                     break;
-                case 8:
+                case 9:
                     System.out.println("Logging out...");
                     return;
                 default:
