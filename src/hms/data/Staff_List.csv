@@ -1,5 +1,5 @@
-﻿Staff ID,Name,Role,Password,Security question,Security answer
-D002,Emilia Clarke,doctor,password,What is your favourite animal?,Dog
-D001,John Smith,doctor,password,What is your favourite animal?,Dog
-P001,Mark Lee,pharmacist,password,What is your favourite animal?,Dog
-A001,Sarah Lee,administrator,password,What is your favourite animal?,Dog
+﻿Staff ID,Name,Role,Gender,Age,Password,Security Question,Security Answer
+D001,John Smith,Doctor,Male,45,password,What is your favorite movie?,Matrix
+D002,Emily Clarke,Doctor,Female,38,password,What was your favorite food as a child?,Spaghetti
+P001,Mark Lee,Pharmacist,Male,29,password,What was the name of your first stuffed animal?,Mr. Fluffles
+A001,Sarah Lee,Administrator,Female,40,password,What was the name of your elementary school?,Maplewood Elementary
