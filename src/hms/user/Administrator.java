@@ -3,6 +3,7 @@ package hms.user;
 import hms.appointment.Appointment;
 import hms.appointment.AppointmentManager;
 import hms.inventory.*;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,16 +11,93 @@ public class Administrator extends User {
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
+    private String staffPath = "src/hms/data/Staff_List.csv";
+
     //constructor
     public Administrator(String id, String name, String password, String securityQuestion, String securityAnswer) {
         super(id, name, "administrator", password, securityQuestion, securityAnswer);
         this.inventoryManager = new InventoryManager();
     }
 
-    //manageStaff method
+    // Method to manage staff
     public void manageStaff() {
-        System.out.println("Managing hospital staff...");
-        //need to add logic to update or remove staff
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Managing hospital staff...");
+            System.out.println("Enter 'update' to update staff, 'remove' to remove staff, 'list' to list all staff, or 'exit' to quit:");
+            String action = scanner.nextLine().trim().toLowerCase();
+
+            switch (action) {
+                case "update":
+                    System.out.print("Enter the ID of the staff member to update: ");
+                    String updateId = scanner.nextLine().trim();
+                    User userToUpdate = User.getUserById(updateId);
+                    if (userToUpdate != null) {
+                        System.out.print("Enter new name (leave blank to keep current): ");
+                        String newName = scanner.nextLine().trim();
+                        if (!newName.isEmpty()) {
+                            userToUpdate.setName(newName);
+                        }
+
+                        System.out.print("Enter new role (leave blank to keep current): ");
+                        String newRole = scanner.nextLine().trim();
+                        if (!newRole.isEmpty()) {
+                            userToUpdate.setRole(newRole);
+                        }
+
+                        System.out.print("Enter new password (leave blank to keep current): ");
+                        String newPassword = scanner.nextLine().trim();
+                        if (!newPassword.isEmpty()) {
+                            userToUpdate.setPassword(newPassword);
+                        }
+
+                        System.out.print("Enter new security question (leave blank to keep current): ");
+                        String newSecurityQuestion = scanner.nextLine().trim();
+                        if (!newSecurityQuestion.isEmpty()) {
+                            userToUpdate.setSecurityQuestion(newSecurityQuestion);
+                        }
+
+                        System.out.print("Enter new security answer (leave blank to keep current): ");
+                        String newSecurityAnswer = scanner.nextLine().trim();
+                        if (!newSecurityAnswer.isEmpty()) {
+                            userToUpdate.setSecurityAnswer(newSecurityAnswer);
+                        }
+
+                        System.out.println("Staff updated successfully.");
+                    } else {
+                        System.out.println("Staff member not found.");
+                    }
+                    break;
+
+                case "remove":
+                    System.out.print("Enter the ID of the staff member to remove: ");
+                    String removeId = scanner.nextLine().trim();
+                    User removedUser = User.removeUserById(removeId);
+                    if (removedUser != null) {
+                        System.out.println("Staff removed successfully.");
+                        User.saveUsersToCSV(staffPath);
+                    } else {
+                        System.out.println("Staff member not found.");
+                    }
+                    break;
+
+                case "list":
+                    System.out.println("Listing all staff members:");
+                    for (User user : User.getAllUsers().values()) {
+                        System.out.println(user.toCSV());
+                    }
+                    break;
+
+                case "exit":
+                    System.out.println("Exiting staff management.");
+                    return;
+
+                default:
+                    System.out.println("Invalid action. Please try again.");
+                    break;
+            }
+        }
     }
 
     //viewAppointmentDetails method

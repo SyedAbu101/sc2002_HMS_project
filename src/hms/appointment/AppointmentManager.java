@@ -38,7 +38,7 @@ public class AppointmentManager implements AppointmentService {
         return true;
     }
 
-    //rescheduleApppointment method
+    //rescheduleAppointment method
     public boolean rescheduleAppointment(String appointmentId, String newDate, String newTime) {
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId().equals(appointmentId) && appointment.getStatus().equals("confirmed")) {

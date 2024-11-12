@@ -137,6 +137,7 @@ public class Doctor extends User {
                     break;
                 case 6:
                     viewUpcomingAppointments();
+                    break;
                 case 7:
                     System.out.print("Enter Appointment ID to record outcome: ");
                     appointmentId = scanner.nextLine();

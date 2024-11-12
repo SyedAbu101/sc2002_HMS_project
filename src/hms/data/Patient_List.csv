@@ -1,5 +1,5 @@
-﻿Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Password,Past Diagnoses and Treatments
-P1001,Alice Brown,5/14/80,Female,A+,alice.brown@example.com,password,Hypertension;Diabetes
-P1002,Bob Stone,11/22/75,Male,B+,bob.stone@example.com,password,Asthma;Allergies
-P1003,Charlie White,7/8/90,Male,O-,charlie.white@example.com,password,Fracture;Flu
-P1004,Dave Green,3/12/85,Male,B+,dave.green@example.com,password,Depression;Anxiety
+﻿Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Password,Past Diagnoses and Treatments,Security question, Security answer
+P1001,Alice Brown,5/14/80,Female,A+,alice.brown@example.com,password,Hypertension;Diabetes,What is your favourite animal?,Dog
+P1002,Bob Stone,11/22/75,Male,B+,bob.stone@example.com,password,Asthma;Allergies,What is your favourite animal?,Dog
+P1003,Charlie White,7/8/90,Male,O-,charlie.white@example.com,password,Fracture;Flu,What is your favourite animal?,Dog
+P1004,Dave Green,3/12/85,Male,B+,dave.green@example.com,password,Depression;Anxiety,What is your favourite animal?,Dog
