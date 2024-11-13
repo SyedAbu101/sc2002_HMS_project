@@ -8,15 +8,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Administrator extends User {
+    private String gender;
+    private String age;
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
     private String staffPath = "src/hms/data/Staff_List.csv";
 
     //constructor
-    public Administrator(String id, String name, String password, String securityQuestion, String securityAnswer) {
+    public Administrator(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
         super(id, name, "administrator", password, securityQuestion, securityAnswer);
+        this.gender = gender;
+        this.age = age;
         this.inventoryManager = new InventoryManager();
+        this.appointmentManager = new AppointmentManager();
     }
 
     // Method to manage staff
@@ -25,10 +30,59 @@ public class Administrator extends User {
 
         while (true) {
             System.out.println("Managing hospital staff...");
-            System.out.println("Enter 'update' to update staff, 'remove' to remove staff, 'list' to list all staff, or 'exit' to quit:");
+            System.out.println("Enter 'add' to add staff, 'update' to update staff, 'remove' to remove staff, 'list' to list all staff, or 'exit' to quit:");
             String action = scanner.nextLine().trim().toLowerCase();
 
             switch (action) {
+                case "add":
+                    System.out.print("Enter new staff ID: ");
+                    String newStaffId = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff name: ");
+                    String newStaffName = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff role: ");
+                    String newStaffRole = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff gender: ");
+                    String newStaffGender = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff age: ");
+                    String newStaffAge = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff password: ");
+                    String newStaffPassword = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff security question: ");
+                    String newStaffSecurityQuestion = scanner.nextLine().trim();
+
+                    System.out.print("Enter new staff security answer: ");
+                    String newStaffSecurityAnswer = scanner.nextLine().trim();
+
+                    if (!newStaffId.isEmpty() && !newStaffName.isEmpty() && !newStaffRole.isEmpty() && !newStaffGender.isEmpty() && !newStaffAge.isEmpty() && !newStaffPassword.isEmpty() && !newStaffSecurityQuestion.isEmpty() && !newStaffSecurityAnswer.isEmpty()) {
+                        switch (newStaffRole.toLowerCase()) {
+                            case "doctor":
+                                new Doctor(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
+                                User.saveUsersToCSV(staffPath);
+                                break;
+                            case "pharmacist":
+                                new Pharmacist(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
+                                User.saveUsersToCSV(staffPath);
+                                break;
+                            case "administrator":
+                                new Administrator(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
+                                User.saveUsersToCSV(staffPath);
+                                break;
+                            default:
+                                System.out.println("Unknown role: " + newStaffRole);
+                                return;
+                        }
+                        System.out.println("New staff added successfully.");
+                    } else {
+                        System.out.println("All fields are required to add a new staff member.");
+                    }
+                    break;
+
                 case "update":
                     System.out.print("Enter the ID of the staff member to update: ");
                     String updateId = scanner.nextLine().trim();
@@ -85,7 +139,9 @@ public class Administrator extends User {
                 case "list":
                     System.out.println("Listing all staff members:");
                     for (User user : User.getAllUsers().values()) {
-                        System.out.println(user.toCSV());
+                        if(!user.role.equalsIgnoreCase("patient")) {
+                            System.out.println(user.toCSV());
+                        }
                     }
                     break;
 

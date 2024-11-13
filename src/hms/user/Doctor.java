@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Doctor extends User {
+    private String gender;
+    private String age;
     private AppointmentManager appointmentManager;
 
     //constructor
-    public Doctor(String id, String name, String password, String securityQuestion, String securityAnswer) {
+    public  Doctor(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
         super(id, name, "doctor", password, securityQuestion, securityAnswer);
+        this.gender = gender;
+        this.age = age;
         this.appointmentManager = new AppointmentManager();
     }
     

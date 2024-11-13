@@ -6,11 +6,15 @@ import hms.appointment.AppointmentOutcomeRecord;
 import hms.inventory.*;
 
 public class Pharmacist extends User {
+    private String gender;
+    private String age;
     private InventoryManager inventoryManager;
 
     //constructor
-    public Pharmacist(String id, String name, String password, String securityQuestion, String securityAnswer) {
+    public Pharmacist(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
         super(id, name, "pharmacist", password, securityQuestion, securityAnswer);
+        this.gender = gender;
+        this.age = age;
         this.inventoryManager = new InventoryManager();
     }
     

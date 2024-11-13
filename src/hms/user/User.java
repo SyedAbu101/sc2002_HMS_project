@@ -29,6 +29,27 @@ public abstract class User {
         userDatabase.put(id, this);
     }
 
+    public abstract void showMenu();
+
+    // Static method to get user by ID
+    public static User getUserById(String id) {
+        return userDatabase.get(id);
+    }
+
+    // Static method to remove user by ID
+    public static User removeUserById(String id) {
+        return userDatabase.remove(id);
+    }
+
+    // Static method to get all users
+    public static Map<String, User> getAllUsers() {
+        return userDatabase;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
     // Setter methods
     public void setName(String name) {
         this.name = name;
@@ -55,42 +76,6 @@ public abstract class User {
         saveUsersToCSV(staffPath);
     }
 
-    // Static method to get user by ID
-    public static User getUserById(String id) {
-        return userDatabase.get(id);
-    }
-
-    // Static method to remove user by ID
-    public static User removeUserById(String id) {
-        return userDatabase.remove(id);
-    }
-
-    // Static method to get all users
-    public static Map<String, User> getAllUsers() {
-        return userDatabase;
-    }
-
-    // Instance method to convert User to CSV format
-    public String toCSV() {
-        return String.join(",", id, name, role, password, securityQuestion, securityAnswer);
-    }
-
-    // Static method to save all users to the CSV file
-    public static void saveUsersToCSV(String staffFilePath) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(staffFilePath))) {
-            bw.write("Staff ID,Name,Role,Password,Security question,Security answer");
-            bw.newLine();
-            for (User user : userDatabase.values()) {
-                if(!user.role.equalsIgnoreCase("patient")) {
-                    bw.write(user.toCSV());
-                    bw.newLine();
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing to the CSV file: " + e.getMessage());
-        }
-    }
-
     public static User login(String id, String password) {
         User user = userDatabase.get(id);
         if (user != null && user.password.equals(password)) {
@@ -107,11 +92,26 @@ public abstract class User {
         System.out.println("Password changed successfully.");
     }
 
-    public String getSecurityQuestion() {
-        return securityQuestion;
+    // Instance method to convert User to CSV format
+    public String toCSV() {
+        return String.join(",", id, name, role, password, securityQuestion, securityAnswer);
     }
 
-    public abstract void showMenu();
+    // Static method to save all staff to the CSV file
+    public static void saveUsersToCSV(String staffFilePath) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(staffFilePath))) {
+            bw.write("Staff ID,Name,Role,Gender,Age,Password,Security question,Security answer");
+            bw.newLine();
+            for (User user : userDatabase.values()) {
+                if(!user.role.equalsIgnoreCase("patient")) {
+                    bw.write(user.toCSV());
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to the CSV file: " + e.getMessage());
+        }
+    }
 
     public static void loadUsersFromCsv(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -137,23 +137,25 @@ public abstract class User {
                     String securityAnswer = details[9].trim();
                     new Patient(id, name, password, securityQuestion, securityAnswer, dateOfBirth, gender, bloodType, contactInfo, pastDiagnosesAndTreatments);
 
-                } else if (details.length == 6) { // has 8 variables
+                } else if (details.length == 8) { // has 8 variables
                     String id = details[0].trim();
                     String name = details[1].trim();
                     String role = details[2].trim();
-                    String password = details[3].trim();
-                    String securityQuestion = details[4].trim();
-                    String securityAnswer = details[5].trim();
+                    String gender = details[3].trim();
+                    String age = details[4].trim();
+                    String password = details[5].trim();
+                    String securityQuestion = details[6].trim();
+                    String securityAnswer = details[7].trim();
 
                     switch (role.toLowerCase()) {
                         case "doctor":
-                            new Doctor(id, name, password, securityQuestion, securityAnswer);
+                            new Doctor(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         case "pharmacist":
-                            new Pharmacist(id, name, password, securityQuestion, securityAnswer);
+                            new Pharmacist(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         case "administrator":
-                            new Administrator(id, name, password, securityQuestion, securityAnswer);
+                            new Administrator(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         default:
                             System.out.println("Unknown role: " + role);
