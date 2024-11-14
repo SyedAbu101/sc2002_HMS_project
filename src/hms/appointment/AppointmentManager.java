@@ -5,14 +5,17 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import hms.medical.MedicalRecord;
+import hms.user.Patient;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppointmentManager implements AppointmentService {
     private List<Appointment> appointments;
-    private List<MedicalRecord> medicalRecords;
+    public static List<MedicalRecord> medicalRecords;
     private List<AppointmentOutcomeRecord> appointmentOutcomes;
+    //private List<Patient> patients = new ArrayList<>();
 
     //constructor
     public AppointmentManager() {
@@ -36,6 +39,17 @@ public class AppointmentManager implements AppointmentService {
         appointments.add(appointment);
         System.out.println("Appointment scheduled successfully.");
         return true;
+    }
+
+    // Auto-create Medical Record if not found
+    public MedicalRecord getOrCreateMedicalRecord(String patientId) {
+        MedicalRecord record = getMedicalRecordByPatientId(patientId);
+        if (record == null) {
+            System.out.println("No existing medical record found. Creating a new record for patient ID: " + patientId);
+            record = new MedicalRecord(patientId);
+            medicalRecords.add(record);
+        }
+        return record;
     }
 
     //rescheduleAppointment method

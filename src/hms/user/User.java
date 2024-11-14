@@ -15,7 +15,7 @@ public abstract class User {
     protected String securityQuestion;
     protected String securityAnswer;
 
-    private String staffPath = "src/hms/data/Staff_List.csv";
+    private String staffPath = "hms/data/Staff_List.csv";
 
     private static Map<String, User> userDatabase = new HashMap<>();
 

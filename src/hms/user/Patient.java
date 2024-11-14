@@ -1,6 +1,7 @@
 package hms.user;
 
 import hms.appointment.*;
+import hms.medical.MedicalRecord;
 import hms.util.ContactInfo;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +13,6 @@ public class Patient extends User {
     private String bloodType;
     private List<String> pastDiagnosesAndTreatments;
     private AppointmentManager appointmentManager;
-
 
     //constructor
     public Patient(String id, String name, String password, String securityQuestion, String securityAnswer, String dateOfBirth, String gender, String bloodType, ContactInfo contactInfo, List<String> pastDiagnosesAndTreatments) {
@@ -34,9 +34,11 @@ public class Patient extends User {
         System.out.println("Gender: " + gender);
         System.out.println("Contact Information: " + contactInfo);
         System.out.println("Blood Type: " + bloodType);
-        System.out.println("Past Diagnoses and Treatments:");
-        for (String diagnosis : pastDiagnosesAndTreatments) {
-            System.out.println("- " + diagnosis);
+        MedicalRecord record = appointmentManager.getOrCreateMedicalRecord(id);
+        if (record != null) {
+            record.display();
+        } else {
+            System.out.println("No medical record found.");
         }
         //need to use getMedicalRecordByPatientId method in AppointmentManager.java
 

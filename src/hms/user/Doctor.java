@@ -20,7 +20,6 @@ public class Doctor extends User {
     
     //viewPatientMedicalRecord method
     public void viewPatientMedicalRecord(String patientId) {
-        System.out.println("Medical Record for Patient ID: " + patientId);
         MedicalRecord record = appointmentManager.getMedicalRecordByPatientId(patientId);
         if (record != null) {
             record.display();
@@ -30,16 +29,44 @@ public class Doctor extends User {
     }
 
     //updateMedicalRecord method
-    public void updateMedicalRecord(String patientId, String newDiagnosis, String newPrescription, String newTreatment) {
-        System.out.println("Updating Medical Record for Patient ID: " + patientId);
-        MedicalRecord record = appointmentManager.getMedicalRecordByPatientId(patientId);
-        if (record != null) {
-            record.addDiagnosis(newDiagnosis);
-            record.addTreatment(newTreatment);
-            record.addPrescription(newPrescription);
+    public void updatePatientMedicalRecord() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Patient ID to view or edit medical records: ");
+        String patientId = scanner.nextLine();
+
+        User patient =getUserById(patientId);
+        if (patient == null) {
+            System.out.println("Invalid Patient ID: " + patientId);
+            return;
+        }
+        // Get or create a medical record
+        MedicalRecord record = appointmentManager.getOrCreateMedicalRecord(patientId);
+
+        // Display the medical record
+        record.display();
+
+        System.out.print("Do you want to edit the medical record? (yes/no): ");
+        String editChoice = scanner.nextLine();
+        if (editChoice.equalsIgnoreCase("yes")) {
+            System.out.print("Enter new diagnosis (leave blank to skip): ");
+            String newDiagnosis = scanner.nextLine().trim();
+            if (!newDiagnosis.isEmpty()) {
+                record.addDiagnosis(newDiagnosis);
+            }
+
+            System.out.print("Enter new treatment (leave blank to skip): ");
+            String newTreatment = scanner.nextLine().trim();
+            if (!newTreatment.isEmpty()) {
+                record.addTreatment(newTreatment);
+            }
+
+            System.out.print("Enter new prescription (leave blank to skip): ");
+            String newPrescription = scanner.nextLine().trim();
+            if (!newPrescription.isEmpty()) {
+                record.addPrescription(newPrescription);
+            }
+
             System.out.println("Medical record updated successfully.");
-        } else {
-            System.out.println("No medical record found for Patient ID: " + patientId);
         }
     }
 
@@ -111,15 +138,7 @@ public class Doctor extends User {
                     viewPatientMedicalRecord(patientId);
                     break;
                 case 2:
-                    System.out.print("Enter Patient ID to update medical records: ");
-                    patientId = scanner.nextLine();
-                    System.out.print("Enter new diagnosis: ");
-                    String newDiagnosis = scanner.nextLine();
-                    System.out.println("Enter new prescription: ");
-                    String newPrescription = scanner.nextLine();
-                    System.out.print("Enter new treatment: ");
-                    String newTreatment = scanner.nextLine();
-                    updateMedicalRecord(patientId, newDiagnosis, newPrescription, newTreatment);
+                    updatePatientMedicalRecord();
                     break;
                 case 3:
                     viewPersonalSchedule();

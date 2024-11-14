@@ -13,7 +13,7 @@ public class Administrator extends User {
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
-    private String staffPath = "src/hms/data/Staff_List.csv";
+    private String staffPath = "hms/data/Staff_List.csv";
 
     //constructor
     public Administrator(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {

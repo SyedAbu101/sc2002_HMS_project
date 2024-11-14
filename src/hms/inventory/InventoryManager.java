@@ -11,7 +11,7 @@ public class InventoryManager {
 
     //constructor
     public InventoryManager() {
-        this.medicines = loadMedicinesFromCSV("src/hms/data/Medicine_List.csv");
+        this.medicines = loadMedicinesFromCSV("hms/data/Medicine_List.csv");
     }
 
     // Method to read medicines from a CSV file

@@ -59,14 +59,14 @@ public class MedicalRecord {
 
     //addPrescription method
     public void addPrescription(String prescription) {
-        treatments.add(prescription);
+        prescriptions.add(prescription);
         System.out.println("Prescription added successfully.");
     }
 
     //display method
     public void display() {
         System.out.println("Medical Record for Patient ID: " + patientId);
-        System.out.println("Blood Type: " + bloodType);
+        //System.out.println("Blood Type: " + bloodType);
         System.out.println("Diagnoses:");
         for (String diagnosis : diagnoses) {
             System.out.println("- " + diagnosis);
@@ -80,4 +80,5 @@ public class MedicalRecord {
             System.out.println("- " + prescription);
         }
     }
+
 }
