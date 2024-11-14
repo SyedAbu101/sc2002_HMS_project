@@ -1,5 +1,7 @@
 package hms.user;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import hms.appointment.AppointmentOutcomeRecord;
@@ -41,10 +43,15 @@ public class Pharmacist extends User {
     }
 
     //submitReplenishmentRequest method
-    public void submitReplenishmentRequest(String medicineName, int quantity) {
-        System.out.println("Submitting replenishment request for: " + medicineName + ", Quantity: " + quantity);
-        inventoryManager.submitReplenishmentRequest(medicineName, quantity);
-        System.out.println("Replenishment request submitted.");
+    private void submitReplenishmentRequest(String medicineName, int quantity) {
+        try (FileWriter writer = new FileWriter("src/hms/data/Replenishment_Requests.csv", true)) {
+            writer.append(id).append(",")
+                  .append(medicineName).append(",")
+                  .append(String.valueOf(quantity)).append("\n");
+            System.out.println("Replenishment request submitted successfully for Medication: " + medicineName + ", Quantity: " + quantity);
+        } catch (IOException e) {
+            System.out.println("Error writing to CSV file: " + e.getMessage());
+        }
     }
 
     //showMenu method, might need to add an option for changing password after login 
@@ -112,6 +119,3 @@ public class Pharmacist extends User {
         return null; 
     }
 }
-
-
-
