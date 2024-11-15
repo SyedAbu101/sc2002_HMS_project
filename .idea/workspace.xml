@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Added new Patient_List.csv and Staff_List.csv, removed old ones">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/data/Staff_List.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/data/Staff_List.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/inventory/InventoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/inventory/InventoryManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hms/user/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/user/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/user/NewLoginSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/NewLoginSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hms/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

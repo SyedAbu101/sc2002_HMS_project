@@ -4,6 +4,9 @@ import hms.appointment.Appointment;
 import hms.appointment.AppointmentManager;
 import hms.inventory.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +16,7 @@ public class Administrator extends User {
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
-    private String staffPath = "hms/data/Staff_List.csv";
+    private String staffPath = "src/hms/data/Staff_List.csv";
 
     //constructor
     public Administrator(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
@@ -26,6 +29,7 @@ public class Administrator extends User {
 
     // Method to manage staff
     public void manageStaff() {
+        User newUser;
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -37,6 +41,11 @@ public class Administrator extends User {
                 case "add":
                     System.out.print("Enter new staff ID: ");
                     String newStaffId = scanner.nextLine().trim();
+
+                    if(searchStaff(newStaffId)) {
+                        System.out.println("Staff ID already in use, please choose a new one");
+                        break;
+                    }
 
                     System.out.print("Enter new staff name: ");
                     String newStaffName = scanner.nextLine().trim();
@@ -62,20 +71,22 @@ public class Administrator extends User {
                     if (!newStaffId.isEmpty() && !newStaffName.isEmpty() && !newStaffRole.isEmpty() && !newStaffGender.isEmpty() && !newStaffAge.isEmpty() && !newStaffPassword.isEmpty() && !newStaffSecurityQuestion.isEmpty() && !newStaffSecurityAnswer.isEmpty()) {
                         switch (newStaffRole.toLowerCase()) {
                             case "doctor":
-                                new Doctor(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
-                                User.saveUsersToCSV(staffPath);
+                                newUser = new Doctor(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
                                 break;
                             case "pharmacist":
-                                new Pharmacist(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
-                                User.saveUsersToCSV(staffPath);
+                                newUser = new Pharmacist(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
                                 break;
                             case "administrator":
-                                new Administrator(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
-                                User.saveUsersToCSV(staffPath);
+                                newUser = new Administrator(newStaffId, newStaffName, newStaffGender, newStaffAge, newStaffPassword, newStaffSecurityQuestion, newStaffSecurityAnswer);
                                 break;
                             default:
                                 System.out.println("Unknown role: " + newStaffRole);
                                 return;
+                        }
+                        if (newUser != null) {
+                            newUser.setAge(newStaffAge);
+                            newUser.setGender(newStaffGender);
+                            User.saveUsersToCSV(staffPath);
                         }
                         System.out.println("New staff added successfully.");
                     } else {
@@ -154,6 +165,25 @@ public class Administrator extends User {
                     break;
             }
         }
+    }
+
+    // Search through Staff_List.csv for a String, returns true if found, else false if not found
+    public boolean searchStaff(String searchString) {
+        try (BufferedReader br = new BufferedReader(new FileReader(staffPath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Skip the header line
+                if (line.startsWith("Staff ID,Name,Role,Password,Security question,Security answer")) {
+                    continue;
+                }
+                if (line.contains(searchString)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the CSV file: " + e.getMessage());
+        }
+        return false;
     }
 
     //viewAppointmentDetails method

@@ -11,11 +11,13 @@ public abstract class User {
     protected String id;
     protected String name;
     protected String password;
+    protected String gender;
+    protected String age;
     protected String role;
     protected String securityQuestion;
     protected String securityAnswer;
 
-    private String staffPath = "hms/data/Staff_List.csv";
+    private String staffPath = "src/hms/data/Staff_List.csv";
 
     private static Map<String, User> userDatabase = new HashMap<>();
 
@@ -31,10 +33,8 @@ public abstract class User {
 
     public abstract void showMenu();
 
-    // Getter method for name
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+
     // Static method to get user by ID
     public static User getUserById(String id) {
         return userDatabase.get(id);
@@ -54,6 +54,10 @@ public abstract class User {
         return securityQuestion;
     }
 
+    public String getGender() { return gender; }
+
+    public String getAge() { return age; }
+
     // Setter methods
     public void setName(String name) {
         this.name = name;
@@ -63,6 +67,14 @@ public abstract class User {
     public void setRole(String role) {
         this.role = role;
         saveUsersToCSV(staffPath);
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public void setPassword(String password) {
@@ -98,7 +110,7 @@ public abstract class User {
 
     // Instance method to convert User to CSV format
     public String toCSV() {
-        return String.join(",", id, name, role, password, securityQuestion, securityAnswer);
+        return String.join(",", id, name, role, gender, age, password, securityQuestion, securityAnswer);
     }
 
     // Static method to save all staff to the CSV file
@@ -118,6 +130,7 @@ public abstract class User {
     }
 
     public static void loadUsersFromCsv(String filePath) {
+        User newUser = null;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean isFirstLine = true;
@@ -153,16 +166,20 @@ public abstract class User {
 
                     switch (role.toLowerCase()) {
                         case "doctor":
-                            new Doctor(id, name, gender, age, password, securityQuestion, securityAnswer);
+                            newUser = new Doctor(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         case "pharmacist":
-                            new Pharmacist(id, name, gender, age, password, securityQuestion, securityAnswer);
+                            newUser = new Pharmacist(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         case "administrator":
-                            new Administrator(id, name, gender, age, password, securityQuestion, securityAnswer);
+                            newUser = new Administrator(id, name, gender, age, password, securityQuestion, securityAnswer);
                             break;
                         default:
                             System.out.println("Unknown role: " + role);
+                    }
+                    if (newUser != null) {
+                        newUser.setAge(age);
+                        newUser.setGender(gender);
                     }
                 } else {
                     System.out.println("Invalid entry in CSV: " + line);

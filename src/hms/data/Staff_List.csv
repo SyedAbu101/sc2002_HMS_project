@@ -1,5 +1,6 @@
-﻿Staff ID,Name,Role,Gender,Age,Password,Security Question,Security Answer
-D001,John Smith,Doctor,Male,45,password,What is your favorite movie?,Matrix
-D002,Emily Clarke,Doctor,Female,38,password,What was your favorite food as a child?,Spaghetti
-P001,Mark Lee,Pharmacist,Male,29,password,What was the name of your first stuffed animal?,Mr. Fluffles
-A001,Sarah Lee,Administrator,Female,40,password,What was the name of your elementary school?,Maplewood Elementary
+Staff ID,Name,Role,Gender,Age,Password,Security question,Security answer
+D003,Tommy Lee,doctor,Male,60,password,What is your favourite food?,Pizza
+D002,Emily Clarke,doctor,Female,38,password,What was your favorite food as a child?,Spaghetti
+D001,John Smith,doctor,Male,45,password,What is your favorite movie?,Matrix
+P001,Mark Lee,pharmacist,Male,29,password,What was the name of your first stuffed animal?,Mr. Fluffles
+A001,Sarah Lee,administrator,Female,40,password,What was the name of your elementary school?,Maplewood Elementary
