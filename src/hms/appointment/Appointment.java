@@ -7,22 +7,19 @@ public class Appointment {
     private String date;
     private String time;
     private String status;
+    private static int apptNo = 0;
 
     //constructor
     public Appointment(String patientId, String doctorId, String date, String time) {
-        this.appointmentId = generateAppointmentId();
+        this.appointmentId = "APPT" + apptNo;
+        apptNo++;
         this.patientId = patientId;
         this.doctorId = doctorId;
         this.date = date;
         this.time = time;
         this.status = "pending"; //this is the default status of appointments
     }
-
-    //this function gives unique appointment IDs by using the current time in milliseconds
-    private String generateAppointmentId() {
-        return "APPT" + System.currentTimeMillis(); 
-    }
-
+    
     //get methods
     public String getAppointmentId() {
         return appointmentId;
