@@ -79,6 +79,19 @@ public class Doctor extends User {
         }
     }
 
+    public void manageRequestedAppointments() {
+        System.out.println("Requested Appointments for Dr. " + name + ":");
+        List<Appointment> requestedAppointments = appointmentManager.getRequestedAppointmentsByDoctorId(id);
+        for (Appointment appointment : requestedAppointments) {
+            System.out.println(appointment);
+            System.out.print("Accept appointment? (yes/no): ");
+            Scanner scanner = new Scanner(System.in);
+            String acceptInput = scanner.nextLine();
+            boolean accept = acceptInput.equalsIgnoreCase("yes");
+            acceptOrDeclineAppointment(appointment.getAppointmentId(), accept);
+        }
+    }
+
     //setAvailability method
     public void setAvailability(String date, String time) {
         System.out.println("Setting availability for Dr. " + name + " on " + date + " at " + time);
@@ -99,7 +112,7 @@ public class Doctor extends User {
 
     public void viewUpcomingAppointments(){
         System.out.println("Upcoming Appointment for Dr. " + name + ":");
-        List<Appointment> appointments = appointmentManager.getFutureAppointmentsByDoctorId(id);
+        List<Appointment> appointments = appointmentManager.getAppointmentsByDoctorId(id);
         for (Appointment appointment : appointments) {
             System.out.println(appointment);
         }
@@ -151,19 +164,14 @@ public class Doctor extends User {
                     setAvailability(date, time);
                     break;
                 case 5:
-                    System.out.print("Enter Appointment ID to accept/decline: ");
-                    String appointmentId = scanner.nextLine();
-                    System.out.print("Accept appointment? (yes/no): ");
-                    String acceptInput = scanner.nextLine();
-                    boolean accept = acceptInput.equalsIgnoreCase("yes");
-                    acceptOrDeclineAppointment(appointmentId, accept);
+                     manageRequestedAppointments();
                     break;
                 case 6:
                     viewUpcomingAppointments();
                     break;
                 case 7:
                     System.out.print("Enter Appointment ID to record outcome: ");
-                    appointmentId = scanner.nextLine();
+                    String appointmentId = scanner.nextLine();
                     System.out.print("Enter type of service provided: ");
                     String serviceType = scanner.nextLine();
                     System.out.print("Enter medication name (if any): ");

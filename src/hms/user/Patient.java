@@ -55,14 +55,14 @@ public class Patient extends User {
         System.out.println("Available Appointment Slots:");
         List<Appointment> availableAppointments = appointmentManager.getAvailableAppointments();
         for (Appointment appointment : availableAppointments) {
-            System.out.println(appointment);
+            User doctor = User.getUserById(appointment.getDoctorId());
+            System.out.println("Appointment ID: " + appointment.getAppointmentId() + ", Date: " + appointment.getDate() + ", Time: " + appointment.getTime() + ", Doctor: " + doctor.getName());
         }
     }
 
     //scheduleAppointment method
-    public void scheduleAppointment(String doctorId, String date, String time) {
-        Appointment appointment = new Appointment(id, doctorId, date, time);
-        boolean success = appointmentManager.scheduleAppointment(appointment);
+    public void scheduleAppointment(String appointmentId) {
+        boolean success = appointmentManager.scheduleAppointment(appointmentId, id);
         if (success) {
             System.out.println("Appointment scheduled successfully.");
         } else {
@@ -78,6 +78,50 @@ public class Patient extends User {
         } else {
             System.out.println("Failed to reschedule appointment. Please try another slot.");
         }
+    }
+
+    public void rescheduleAppointment() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Enter the appointment ID of an already confirmed appointment
+        System.out.print("Enter Appointment ID to reschedule: ");
+        String appointmentId = scanner.nextLine();
+
+        // Step 2: Check if the appointment is confirmed and belongs to the patient
+        Appointment oldAppointment = appointmentManager.getAppointmentById(appointmentId);
+        if (oldAppointment == null || !oldAppointment.getPatientId().equals(id) || !oldAppointment.getStatus().equals("confirmed")) {
+            System.out.println("Invalid or unconfirmed appointment ID.");
+            return;
+        }
+
+        // Step 3: Display available appointments
+        System.out.println("Available Appointment Slots:");
+        List<Appointment> availableAppointments = appointmentManager.getAvailableAppointments();
+        for (Appointment appointment : availableAppointments) {
+            User doctor = User.getUserById(appointment.getDoctorId());
+            System.out.println("Appointment ID: " + appointment.getAppointmentId() + ", Date: " + appointment.getDate() + ", Time: " + appointment.getTime() + ", Doctor: " + doctor.getName());
+        }
+
+        // Step 4: Enter the new appointment ID
+        System.out.print("Enter new Appointment ID: ");
+        String newAppointmentId = scanner.nextLine();
+
+        // Step 5: Check if the new appointment is available
+        Appointment newAppointment = appointmentManager.getAppointmentById(newAppointmentId);
+        if (newAppointment == null || !newAppointment.getStatus().equals("pending")) {
+            System.out.println("Invalid or unavailable appointment ID.");
+            return;
+        }
+
+        // Step 6: Update the old appointment to pending and remove patient ID
+        oldAppointment.setStatus("pending");
+        oldAppointment.setPatientId(null);
+
+        // Step 7: Update the new appointment with the patient ID and set status to requested
+        newAppointment.setPatientId(id);
+        newAppointment.setStatus("requested");
+
+        System.out.println("Appointment rescheduled successfully.");
     }
 
     //cancelAppointment method
@@ -144,32 +188,16 @@ public class Patient extends User {
                     viewAvailableAppointments();
                     break;
                 case 4:
-                    System.out.print("Enter Doctor ID: ");
-                    String doctorId = scanner.nextLine();
-                    User doctor = User.getUserById(doctorId);
-                    while (doctor == null) {
-                        System.out.print("Doctor ID doesnt exist. Please enter again:");
-                        doctorId = scanner.nextLine();
-                        doctor = User.getUserById(doctorId);
-                    }
-                    System.out.print("Enter Appointment Date (YYYY-MM-DD): ");
-                    String date = scanner.nextLine();
-                    System.out.print("Enter Appointment Time (HH:MM): ");
-                    String time = scanner.nextLine();
-                    scheduleAppointment(doctorId, date, time);
+                    System.out.print("Enter appointment ID: ");
+                    String appointmentId1 = scanner.nextLine();
+                    scheduleAppointment(appointmentId1);
                     break;
                 case 5:
-                    System.out.print("Enter Appointment ID to reschedule: ");
-                    String appointmentId = scanner.nextLine();
-                    System.out.print("Enter new Appointment Date (YYYY-MM-DD): ");
-                    String newDate = scanner.nextLine();
-                    System.out.print("Enter new Appointment Time (HH:MM): ");
-                    String newTime = scanner.nextLine();
-                    rescheduleAppointment(appointmentId, newDate, newTime);
+                    rescheduleAppointment();
                     break;
                 case 6:
                     System.out.print("Enter Appointment ID to cancel: ");
-                    appointmentId = scanner.nextLine();
+                    String appointmentId = scanner.nextLine();
                     cancelAppointment(appointmentId);
                     break;
                 case 7:

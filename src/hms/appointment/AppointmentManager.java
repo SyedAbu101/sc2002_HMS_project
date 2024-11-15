@@ -12,33 +12,44 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppointmentManager implements AppointmentService {
-    private List<Appointment> appointments;
+    private static List<Appointment> appointments;
     public static List<MedicalRecord> medicalRecords;
-    private List<AppointmentOutcomeRecord> appointmentOutcomes;
-    //private List<Patient> patients = new ArrayList<>();
+    private static List<AppointmentOutcomeRecord> appointmentOutcomes;
+
 
     //constructor
     public AppointmentManager() {
-        this.appointments = new ArrayList<>();
-        this.medicalRecords = new ArrayList<>();
-        this.appointmentOutcomes = new ArrayList<>();
+        appointments = new ArrayList<>();
+        medicalRecords = new ArrayList<>();
+        appointmentOutcomes = new ArrayList<>();
     }
 
     //scheduleAppointment method
-    public boolean scheduleAppointment(Appointment appointment) {
-        for (Appointment existingAppointment : appointments) {
-            if (existingAppointment.getDoctorId().equals(appointment.getDoctorId()) &&
-                existingAppointment.getDate().equals(appointment.getDate()) &&
-                existingAppointment.getTime().equals(appointment.getTime()) &&
-                existingAppointment.getStatus().equals("confirmed")) {
-                System.out.println("The appointment slot is already taken.");
-                return false;
+    public boolean scheduleAppointment(String appointmentId, String patientId) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentId().equals(appointmentId) && appointment.getStatus().equals("pending")) {
+                appointment.setPatientId(patientId);
+                appointment.setStatus("requested");
+                return true;
             }
         }
-        appointment.setStatus("confirmed");
-        appointments.add(appointment);
-        System.out.println("Appointment scheduled successfully.");
-        return true;
+        System.out.println("The appointment slot is not available.");
+        return false;
+    }
+
+    public List<Appointment> getRequestedAppointmentsByDoctorId(String doctorId) {
+        return appointments.stream()
+                .filter(appointment -> appointment.getDoctorId().equals(doctorId) && appointment.getStatus().equals("requested"))
+                .collect(Collectors.toList());
+    }
+
+    public Appointment getAppointmentById(String appointmentId) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentId().equals(appointmentId)) {
+                return appointment;
+            }
+        }
+        return null;
     }
 
     // Auto-create Medical Record if not found
@@ -70,7 +81,8 @@ public class AppointmentManager implements AppointmentService {
     public boolean cancelAppointment(String appointmentId) {
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId().equals(appointmentId) && appointment.getStatus().equals("confirmed")) {
-                appointment.setStatus("cancelled");
+                appointment.setPatientId("Null");
+                appointment.setStatus("pending");
                 System.out.println("Appointment cancelled successfully.");
                 return true;
             }
@@ -122,7 +134,8 @@ public class AppointmentManager implements AppointmentService {
 
     //addAvailableSlot method
     public void addAvailableSlot(String doctorId, String date, String time) {
-        Appointment appointment = new Appointment("", doctorId, date, time);
+        Appointment appointment = new Appointment("Null", doctorId, date, time);
+        appointment.setStatus("pending");
         appointments.add(appointment);
         System.out.println("Available slot added successfully.");
     }
@@ -178,7 +191,7 @@ public class AppointmentManager implements AppointmentService {
 
 //interface
 interface AppointmentService {
-    boolean scheduleAppointment(Appointment appointment);
+    boolean scheduleAppointment(String appointmentId, String patientId);
     boolean rescheduleAppointment(String appointmentId, String newDate, String newTime);
     boolean cancelAppointment(String appointmentId);
     List<Appointment> getAppointmentsByPatientId(String patientId);

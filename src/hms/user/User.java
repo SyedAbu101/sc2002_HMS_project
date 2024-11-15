@@ -31,6 +31,10 @@ public abstract class User {
 
     public abstract void showMenu();
 
+    // Getter method for name
+    public String getName() {
+        return name;
+    }
     // Static method to get user by ID
     public static User getUserById(String id) {
         return userDatabase.get(id);

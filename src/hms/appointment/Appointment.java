@@ -61,6 +61,10 @@ public class Appointment {
         this.status = status;
     }
 
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
     public String toString() {
         return "Appointment ID: " + appointmentId + ", Patient ID: " + patientId + ", Doctor ID: " + doctorId + ", Date: " + date + ", Time: " + time + ", Status: " + status;
     }
