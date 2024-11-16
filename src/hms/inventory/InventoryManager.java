@@ -106,12 +106,6 @@ public class InventoryManager {
     public List<Medicine> getMedicines() {
         return new ArrayList<>(medicines);
     }
-    
-    //submitReplenishmentRequest method
-    public void submitReplenishmentRequest(String medicineName, int quantity) {
-        System.out.println("Replenishment request submitted for: " + medicineName + ", Quantity: " + quantity);
-        //need to update with real logic
-    }
 
     //getMedicineByName method
     public Medicine getMedicineByName(String medicineName) {
