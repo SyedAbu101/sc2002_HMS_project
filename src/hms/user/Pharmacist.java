@@ -22,7 +22,7 @@ public class Pharmacist extends User {
         this.appointmentManager = new AppointmentManager();
     }
     
-  //view appointmentOutcomeRecord method without using getAppointmentOutcomeById
+  //viewAppointmentOutcomeRecord method
     public void viewAppointmentOutcomeRecord(String appointmentId) {
         if (appointmentManager == null) {
             this.appointmentManager = new AppointmentManager();
