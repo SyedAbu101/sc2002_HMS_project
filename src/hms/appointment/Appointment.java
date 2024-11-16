@@ -8,7 +8,6 @@ public class Appointment {
     private String time;
     private String status;
     private static int apptNo = 0;
-
     //constructor
     public Appointment(String patientId, String doctorId, String date, String time) {
         this.appointmentId = "APPT" + apptNo;
@@ -19,7 +18,7 @@ public class Appointment {
         this.time = time;
         this.status = "pending"; //this is the default status of appointments
     }
-    
+
     //get methods
     public String getAppointmentId() {
         return appointmentId;
