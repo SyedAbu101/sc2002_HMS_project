@@ -1,6 +1,6 @@
 Name,Stock,LowStockAlertLevel
 Paracetamol,100,20
-Ibuprofen,50,10
+Ibuprofen,80,10
 Amoxicillin,75,15
 Omeprazole,30,10
-Xanax,70,25
+Xanax,80,25

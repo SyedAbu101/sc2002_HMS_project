@@ -4,13 +4,8 @@ import hms.appointment.Appointment;
 import hms.appointment.AppointmentManager;
 import hms.inventory.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Administrator extends User {
     private String gender;
@@ -19,7 +14,7 @@ public class Administrator extends User {
     private AppointmentManager appointmentManager;
 
     private String staffPath = "src/hms/data/Staff_List.csv";
-    private String replenishmentPath = "src/hms/data/Replenishment_Requests.csv";
+    private String replenishmentPath = "src/hms/data/Pending_Replenishment_Requests.csv";
     private String medicinePath = "src/hms/data/Medicine_List.csv";
 
     //constructor
@@ -46,7 +41,7 @@ public class Administrator extends User {
                     System.out.print("Enter new staff ID: ");
                     String newStaffId = scanner.nextLine().trim();
 
-                    if(searchStaff(newStaffId)) {
+                    if (searchStaff(newStaffId)) {
                         System.out.println("Staff ID already in use, please choose a new one");
                         break;
                     }
@@ -152,9 +147,23 @@ public class Administrator extends User {
                     break;
 
                 case "list":
-                    System.out.println("Listing all staff members:");
+                    System.out.println("Enter attribute to filter by (Staff ID, Name, Role, Gender, Age, Password, Security question, Security answer): ");
+                    String attribute = scanner.nextLine().trim();
+
+                    // List of valid attributes
+                    List<String> validAttributes = Arrays.asList("Staff ID", "Name", "Role", "Gender", "Age", "Password", "Security question", "Security answer");
+
+                    if (!validAttributes.contains(attribute)) {
+                        System.out.println("Error: Invalid attribute");
+                        return;
+                    }
+
+                    System.out.println("Enter value for " + attribute + ": ");
+                    String value = scanner.nextLine().trim();
+
+                    System.out.println("Listing all staff members filtered by " + attribute + " = " + value + ":");
                     for (User user : User.getAllUsers().values()) {
-                        if(!user.role.equalsIgnoreCase("patient")) {
+                        if (!user.role.equalsIgnoreCase("patient") && userMatchesAttribute(user, attribute, value)) {
                             System.out.println(user.toCSV());
                         }
                     }
@@ -188,6 +197,30 @@ public class Administrator extends User {
             System.err.println("Error reading the CSV file: " + e.getMessage());
         }
         return false;
+    }
+
+    // Checks whether a particular user has that specified attribute that admin wants
+    private boolean userMatchesAttribute(User user, String attribute, String value) {
+        switch (attribute) {
+            case "Staff ID":
+                return user.id.equals(value);
+            case "Name":
+                return user.name.equals(value);
+            case "Role":
+                return user.role.equals(value);
+            case "Gender":
+                return user.gender.equals(value);
+            case "Age":
+                return user.age.equals(value);
+            case "Password":
+                return user.password.equals(value);
+            case "Security question":
+                return user.securityQuestion.equals(value);
+            case "Security answer":
+                return user.securityAnswer.equals(value);
+            default:
+                return false;
+        }
     }
 
     //viewAppointmentDetails method
@@ -304,6 +337,7 @@ public class Administrator extends User {
         System.out.println("Approving replenishment requests...");
         try (BufferedReader reader = new BufferedReader(new FileReader(replenishmentPath))) {
             List<String> approvedRequests = new ArrayList<>();
+            List<String> remainingRequests = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println("Pending Replenishment Request: " + line);
@@ -312,7 +346,6 @@ public class Administrator extends User {
                 String response = scanner.nextLine().trim().toLowerCase();
                 if (response.equals("yes")) {
                     approvedRequests.add(line);
-                    System.out.println("Request approved.");
                 } else {
                     System.out.println("Request not approved.");
                 }
@@ -323,12 +356,26 @@ public class Administrator extends User {
                 String[] requestDetails = request.split(",");
                 String medicineName = requestDetails[1];
                 int quantity = Integer.parseInt(requestDetails[2]);
+                if(inventoryManager.getMedicineByName(medicineName) == null) {
+                    System.out.println("Invalid medicine, will not update this replenishment");
+                    continue;
+                }
                 inventoryManager.updateStock(medicineName, inventoryManager.getMedicineByName(medicineName).getStock() + quantity);
+                System.out.println("Request approved.");
+            }
+            // Rewrite replenishmentPath with only the requests that were not processed
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(replenishmentPath))) {
+                for (String remainingRequest : remainingRequests) {
+                    writer.write(remainingRequest);
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                System.out.println("Error writing replenishment requests: " + e.getMessage());
             }
         } catch (IOException e) {
             System.out.println("Error reading replenishment requests: " + e.getMessage());
         }
-    }
+}
 
     //showMenu method
     public void showMenu() {

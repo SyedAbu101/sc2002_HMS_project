@@ -13,6 +13,8 @@ public class Pharmacist extends User {
     private InventoryManager inventoryManager;
     private AppointmentManager appointmentManager;
 
+    private String replenishmentPath = "src/hms/data/Pending_Replenishment_Requests.csv";
+
     //constructor
     public Pharmacist(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
         super(id, name, "pharmacist", password, securityQuestion, securityAnswer);
@@ -65,7 +67,7 @@ public class Pharmacist extends User {
 
     //submitReplenishmentRequest method
     private void submitReplenishmentRequest(String medicineName, int quantity) {
-        try (FileWriter writer = new FileWriter("src/hms/data/Pending_Replenishment_Requests.csv", true)) {
+        try (FileWriter writer = new FileWriter(replenishmentPath, true)) {
             writer.append(id).append(",")
                   .append(medicineName).append(",")
                   .append(String.valueOf(quantity)).append("\n");
