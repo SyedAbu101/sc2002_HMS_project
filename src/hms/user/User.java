@@ -51,7 +51,7 @@ public abstract class User {
         return userDatabase.remove(id);
     }
 
-    // Static method to get all users
+    // Static method for getter for all users
     public static Map<String, User> getAllUsers() {
         return userDatabase;
     }
