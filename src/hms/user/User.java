@@ -3,6 +3,7 @@ package hms.user;
 import hms.util.ContactInfo;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,13 @@ public abstract class User {
     protected String securityQuestion;
     protected String securityAnswer;
 
-    private String staffPath = "src/hms/data/Staff_List.csv";
+    // Additional fields for patient-specific data
+    protected String dateOfBirth;
+    protected String bloodType;
+    protected String contactInfo;
+    protected String pastDiagnosesAndTreatments;
 
+    private String staffPath = "src/hms/data/Staff_List.csv";
     private static Map<String, User> userDatabase = new HashMap<>();
 
     public User(String id, String name, String role, String password, String securityQuestion, String securityAnswer) {
@@ -106,20 +112,59 @@ public abstract class User {
     public void changePassword(String newPassword) {
         this.password = newPassword;
         System.out.println("Password changed successfully.");
+        // Determine which file to save based on role
+        String filePath = this.role.equalsIgnoreCase("patient") ? "src/hms/data/Patient_List.csv" : "src/hms/data/Staff_List.csv";
+        // Save updated users to the correct CSV file
+        saveUsersToCSV(filePath);
+        // Reload users from the CSV to update in-memory database
+        loadUsersFromCsv(filePath);
     }
 
     // Instance method to convert User to CSV format
     public String toCSV() {
-        return String.join(",", id, name, role, gender, age, password, securityQuestion, securityAnswer);
+        if (this.role.equalsIgnoreCase("patient")) {
+            // Use the stored values for the patient fields
+            return String.join(",",
+                    id,
+                    name,
+                    dateOfBirth,
+                    gender,
+                    bloodType,
+                    contactInfo,
+                    password,
+                    pastDiagnosesAndTreatments,
+                    securityQuestion,
+                    securityAnswer
+            );
+        } else {
+            // Staff format
+            return String.join(",",
+                    id,
+                    name,
+                    role,
+                    gender,
+                    age,
+                    password,
+                    securityQuestion,
+                    securityAnswer
+            );
+        }
     }
 
-    // Static method to save all staff to the CSV file
-    public static void saveUsersToCSV(String staffFilePath) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(staffFilePath))) {
-            bw.write("Staff ID,Name,Role,Gender,Age,Password,Security question,Security answer");
+    // Static method to save all users to the CSV file
+    public static void saveUsersToCSV(String filePath) {
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)))) {
+            // Write header based on file type
+            if (filePath.contains("Patient_List")) {
+                bw.write("Patient ID,Name,Date of Birth,Gender,Blood Type,Contact Information,Password,Past Diagnoses and Treatments,Security Question,Security Answer");
+            } else {
+                bw.write("Staff ID,Name,Role,Gender,Age,Password,Security Question,Security Answer");
+            }
             bw.newLine();
+            // Write each user to the CSV file based on the role
             for (User user : userDatabase.values()) {
-                if(!user.role.equalsIgnoreCase("patient")) {
+                if ((filePath.contains("Patient_List") && user.role.equalsIgnoreCase("patient")) ||
+                        (filePath.contains("Staff_List") && !user.role.equalsIgnoreCase("patient"))) {
                     bw.write(user.toCSV());
                     bw.newLine();
                 }
@@ -130,7 +175,6 @@ public abstract class User {
     }
 
     public static void loadUsersFromCsv(String filePath) {
-        User newUser = null;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean isFirstLine = true;
@@ -141,20 +185,28 @@ public abstract class User {
                 }
 
                 String[] details = line.split(",");
-                if (details.length == 10) { // Has 10 variables
+
+                if (filePath.contains("Patient_List") && details.length >= 10) { // Patient file format
                     String id = details[0].trim();
                     String name = details[1].trim();
                     String dateOfBirth = details[2].trim();
                     String gender = details[3].trim();
                     String bloodType = details[4].trim();
-                    ContactInfo contactInfo = new ContactInfo(details[5].trim());
+                    String contactInfo = details[5].trim();
                     String password = details[6].trim();
-                    List<String> pastDiagnosesAndTreatments = List.of(details[7].trim().split(";"));
+                    String pastDiagnosesAndTreatments = details[7].trim();
                     String securityQuestion = details[8].trim();
                     String securityAnswer = details[9].trim();
-                    new Patient(id, name, password, securityQuestion, securityAnswer, dateOfBirth, gender, bloodType, contactInfo, pastDiagnosesAndTreatments);
 
-                } else if (details.length == 8) { // has 8 variables
+                    User patient = new Patient(id, name, password, securityQuestion, securityAnswer, dateOfBirth, gender, bloodType, new ContactInfo(contactInfo), List.of(pastDiagnosesAndTreatments));
+                    patient.dateOfBirth = dateOfBirth; // Store patient-specific fields
+                    patient.gender = gender;
+                    patient.bloodType = bloodType;
+                    patient.contactInfo = contactInfo;
+                    patient.pastDiagnosesAndTreatments = pastDiagnosesAndTreatments;
+                    userDatabase.put(id, patient);
+
+                } else if (filePath.contains("Staff_List") && details.length == 8) { // Staff file format
                     String id = details[0].trim();
                     String name = details[1].trim();
                     String role = details[2].trim();
@@ -164,6 +216,7 @@ public abstract class User {
                     String securityQuestion = details[6].trim();
                     String securityAnswer = details[7].trim();
 
+                    User newUser;
                     switch (role.toLowerCase()) {
                         case "doctor":
                             newUser = new Doctor(id, name, gender, age, password, securityQuestion, securityAnswer);
@@ -176,10 +229,12 @@ public abstract class User {
                             break;
                         default:
                             System.out.println("Unknown role: " + role);
+                            continue; // Skip unknown roles
                     }
                     if (newUser != null) {
                         newUser.setAge(age);
                         newUser.setGender(gender);
+                        userDatabase.put(id, newUser);
                     }
                 } else {
                     System.out.println("Invalid entry in CSV: " + line);
