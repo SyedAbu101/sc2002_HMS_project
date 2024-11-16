@@ -191,5 +191,3 @@ public abstract class User {
         }
     }
 }
-
-
