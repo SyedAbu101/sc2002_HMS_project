@@ -1,16 +1,17 @@
 package hms.user;
 
+import hms.inventory.*;
+import hms.appointment.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-import hms.appointment.AppointmentOutcomeRecord;
-import hms.inventory.*;
 
 public class Pharmacist extends User {
     private String gender;
     private String age;
     private InventoryManager inventoryManager;
+    private AppointmentManager appointmentManager;
 
     //constructor
     public Pharmacist(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
@@ -18,19 +19,39 @@ public class Pharmacist extends User {
         this.gender = gender;
         this.age = age;
         this.inventoryManager = new InventoryManager();
+        this.appointmentManager = new AppointmentManager();
     }
     
-    //view appointmentOutcomeRecord method
-    public void viewAppointmentOutcomeRecord(AppointmentOutcomeRecord record) {
-        System.out.println("Appointment Outcome Record:");
-        System.out.println(record);
+  //view appointmentOutcomeRecord method without using getAppointmentOutcomeById
+    public void viewAppointmentOutcomeRecord(String appointmentId) {
+        if (appointmentManager == null) {
+            this.appointmentManager = new AppointmentManager();
+        }
+        for (AppointmentOutcomeRecord outcome : AppointmentManager.appointmentOutcomes) {
+            if (outcome.getAppointmentId().equals(appointmentId)) {
+                System.out.println("Appointment Outcome Details:");
+                System.out.println("Appointment ID: " + outcome.getAppointmentId());
+                System.out.println("Patient ID: " + outcome.getPatientId());
+                System.out.println("Service Type: " + outcome.getServiceType());
+                System.out.println("Medication Prescribed: " + outcome.getMedicationName());
+                System.out.println("Notes: " + outcome.getNotes());
+                return;
+            }
+        }
+        System.out.println("No outcome record found for Appointment ID: " + appointmentId);
     }
-
-    //updatePrescriptionStatus method
+    
+  //updatePrescriptionStatus method
     public void updatePrescriptionStatus(String appointmentId, String status) {
         System.out.println("Updating prescription status for Appointment ID: " + appointmentId);
-        // need to implement logic here
-        System.out.println("Prescription status updated to: " + status);
+        for (AppointmentOutcomeRecord outcome : AppointmentManager.appointmentOutcomes) {
+            if (outcome.getAppointmentId().equals(appointmentId)) {
+                outcome.setPrescriptionStatus(status);
+                System.out.println("Prescription status updated to: " + status);
+                return;
+            }
+        }
+        System.out.println("No outcome record found for Appointment ID: " + appointmentId);
     }
 
     //viewInventory method
@@ -44,11 +65,12 @@ public class Pharmacist extends User {
 
     //submitReplenishmentRequest method
     private void submitReplenishmentRequest(String medicineName, int quantity) {
-        try (FileWriter writer = new FileWriter("src/hms/data/Replenishment_Requests.csv", true)) {
+        try (FileWriter writer = new FileWriter("src/hms/data/Pending_Replenishment_Requests.csv", true)) {
             writer.append(id).append(",")
                   .append(medicineName).append(",")
                   .append(String.valueOf(quantity)).append("\n");
             System.out.println("Replenishment request submitted successfully for Medication: " + medicineName + ", Quantity: " + quantity);
+            System.out.println("Awaiting approval from administrator...");
         } catch (IOException e) {
             System.out.println("Error writing to CSV file: " + e.getMessage());
         }
@@ -72,14 +94,9 @@ public class Pharmacist extends User {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter Appointment ID to view outcome record: ");
+                	System.out.print("Enter Appointment ID to view outcome record: ");
                     String appointmentId = scanner.nextLine();
-                    AppointmentOutcomeRecord record = getAppointmentOutcomeRecord(appointmentId);
-                    if (record != null) {
-                        viewAppointmentOutcomeRecord(record);
-                    } else {
-                        System.out.println("No record found for Appointment ID: " + appointmentId);
-                    }
+                    viewAppointmentOutcomeRecord(appointmentId);
                     break;
                 case 2:
                     System.out.print("Enter Appointment ID to update prescription status: ");
@@ -112,10 +129,4 @@ public class Pharmacist extends User {
             }
         }
     } //showMenu ends here
-
-    //method to get an appointment outcome record
-    private AppointmentOutcomeRecord getAppointmentOutcomeRecord(String appointmentId) {
-        //need to update with actual logic to get an appointment outcome by ID
-        return null; 
-    }
-}
+} 
