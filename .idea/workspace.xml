@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Modified manageMedicationInventory() to allow for all functions needed as admin">
+    <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Modified manageStaff() to allow list to filter by User attributes and approveReplenishmentRequests to clear the pending replenishment csv after every round of approval">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/data/Medicine_List.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/data/Medicine_List.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hms/user/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +36,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -174,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731733968459</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Modified manageStaff() to allow list to filter by User attributes and approveReplenishmentRequests to clear the pending replenishment csv after every round of approval">
+      <option name="closed" value="true" />
+      <created>1731755730840</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731755730840</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -227,6 +233,7 @@
     <MESSAGE value="Fixed bugs related to writing and reading staff from csv as well as preventing duplicate staff IDs" />
     <MESSAGE value="Fixed bugs related to reading and writing staff from csv as well as preventing duplicate staff IDs" />
     <MESSAGE value="Modified manageMedicationInventory() to allow for all functions needed as admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified manageMedicationInventory() to allow for all functions needed as admin" />
+    <MESSAGE value="Modified manageStaff() to allow list to filter by User attributes and approveReplenishmentRequests to clear the pending replenishment csv after every round of approval" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modified manageStaff() to allow list to filter by User attributes and approveReplenishmentRequests to clear the pending replenishment csv after every round of approval" />
   </component>
 </project>

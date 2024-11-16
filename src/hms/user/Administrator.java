@@ -200,7 +200,7 @@ public class Administrator extends User {
     }
 
     // Checks whether a particular user has that specified attribute that admin wants
-    private boolean userMatchesAttribute(User user, String attribute, String value) {
+    public boolean userMatchesAttribute(User user, String attribute, String value) {
         switch (attribute) {
             case "Staff ID":
                 return user.id.equals(value);
