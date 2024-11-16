@@ -30,10 +30,15 @@ public class Medicine {
         this.stock = stock;
     }
 
+    public void setLowStockAlertLevel(int lowStockAlertLevel) { this.lowStockAlertLevel = lowStockAlertLevel; }
+
     //toString methods provides a string representation of an object, so that when we print an instance of the medicine class, we get a detailed description of the object's state
     public String toString() {
         return "Medicine Name: " + name + ", Stock: " + stock + ", Low Stock Alert Level: " + lowStockAlertLevel;
     }
+
+    // Convert to CSV format string
+    public String toCSV() { return name + "," + stock + "," + lowStockAlertLevel; }
 
     // Static method to create a Medicine instance from a CSV row
     public static Medicine fromCSV(String csvRow) {

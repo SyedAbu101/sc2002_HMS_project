@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Added new Patient_List.csv and Staff_List.csv, removed old ones">
+    <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Fixed bugs related to reading and writing staff from csv as well as preventing duplicate staff IDs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/data/Staff_List.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/data/Staff_List.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/data/Medicine_List.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/data/Medicine_List.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hms/inventory/InventoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/inventory/InventoryManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/inventory/Medicine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/inventory/Medicine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hms/user/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/user/NewLoginSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/NewLoginSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hms/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731403181446</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed bugs related to reading and writing staff from csv as well as preventing duplicate staff IDs">
+      <option name="closed" value="true" />
+      <created>1731690767802</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731690767802</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -210,6 +217,8 @@
     <MESSAGE value="Updated Doctor.java, AppointmentManager.java, MedicalRecord.java to include code for prescriptions" />
     <MESSAGE value="Updated Administrator.java to include manageStaff function that updates and removes staff permanently in the Staff_List.csv" />
     <MESSAGE value="Added new Patient_List.csv and Staff_List.csv, removed old ones" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new Patient_List.csv and Staff_List.csv, removed old ones" />
+    <MESSAGE value="Fixed bugs related to writing and reading staff from csv as well as preventing duplicate staff IDs" />
+    <MESSAGE value="Fixed bugs related to reading and writing staff from csv as well as preventing duplicate staff IDs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs related to reading and writing staff from csv as well as preventing duplicate staff IDs" />
   </component>
 </project>

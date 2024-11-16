@@ -1,13 +1,17 @@
 package hms.inventory;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class InventoryManager {
     private List<Medicine> medicines;
+    private String medicinePath = "src/hms/data/Medicine_List.csv";
 
     //constructor
     public InventoryManager() {
@@ -35,16 +39,50 @@ public class InventoryManager {
         return medicinesList;
     }
 
+    // Method to save medicines to a CSV file
+    public void saveMedicinesToCSV(String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write("Name,Stock,LowStockAlertLevel\n");
+            for (Medicine medicine : medicines) {
+                writer.write(medicine.toCSV() + "\n");
+            }
+            System.out.println("Medicines saved successfully to " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error writing to the CSV file: " + e.getMessage());
+        }
+    }
+
     //addMedicine method
-    public void addMedicine(Medicine medicine) {
-        medicines.add(medicine);
-        System.out.println("Medicine added successfully: " + medicine.getName());
+    public Boolean addMedicine(String name, int stock, int lowStockAlertLevel) {
+        try {
+            if (name.isEmpty()) {
+                throw new IllegalArgumentException("Medicine name cannot be empty.");
+            }
+            if (stock < 0) {
+                throw new IllegalArgumentException("Stock cannot be negative.");
+            }
+            if (lowStockAlertLevel < 0) {
+                throw new IllegalArgumentException("Low stock alert level cannot be negative.");
+            }
+            Medicine newMedicine = new Medicine(name, stock, lowStockAlertLevel);
+            medicines.add(newMedicine);
+            saveMedicinesToCSV(medicinePath);
+            return true;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            return false;
+        }
     }
 
     //removeMedicine method
     public void removeMedicine(String medicineName) {
         boolean removed = medicines.removeIf(medicine -> medicine.getName().equalsIgnoreCase(medicineName));
         if (removed) {
+            saveMedicinesToCSV(medicinePath);
             System.out.println("Medicine removed successfully: " + medicineName);
         } else {
             System.out.println("Medicine not found: " + medicineName);
@@ -56,6 +94,7 @@ public class InventoryManager {
         for (Medicine medicine : medicines) {
             if (medicine.getName().equalsIgnoreCase(medicineName)) {
                 medicine.setStock(newStock);
+                saveMedicinesToCSV(medicinePath);
                 System.out.println("Stock updated successfully for: " + medicineName);
                 return;
             }

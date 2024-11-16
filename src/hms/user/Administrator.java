@@ -7,6 +7,7 @@ import hms.inventory.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +19,8 @@ public class Administrator extends User {
     private AppointmentManager appointmentManager;
 
     private String staffPath = "src/hms/data/Staff_List.csv";
+    private String replenishmentPath = "src/hms/data/Replenishment_Requests.csv";
+    private String medicinePath = "src/hms/data/Medicine_List.csv";
 
     //constructor
     public Administrator(String id, String name, String gender, String age, String password, String securityQuestion, String securityAnswer) {
@@ -149,10 +152,10 @@ public class Administrator extends User {
                     break;
 
                 case "list":
-                	System.out.println("Listing all staff members:");
+                    System.out.println("Listing all staff members:");
                     for (User user : User.getAllUsers().values()) {
                         if(!user.role.equalsIgnoreCase("patient")) {
-                            System.out.println("ID: " + user.id + ", Name: " + user.name + ", Role: " + user.role);
+                            System.out.println(user.toCSV());
                         }
                     }
                     break;
@@ -196,19 +199,110 @@ public class Administrator extends User {
         }
     }
 
-    //viewMedicationInventory method
-    public void viewMedicationInventory() {
-        System.out.println("View medication inventory...");
-        List<Medicine> medicines = inventoryManager.getMedicines();
-        for (Medicine medicine : medicines) {
-            System.out.println(medicine);
+    //manageMedicationInventory method
+    public void manageMedicationInventory() {
+        Scanner scanner = new Scanner(System.in);
+        InventoryManager inventoryManager = new InventoryManager();
+
+        while (true) {
+            System.out.println("\nMedication Inventory Management");
+            System.out.println("1. View medication inventory");
+            System.out.println("2. Add medication");
+            System.out.println("3. Remove medication");
+            System.out.println("4. Update medication stock");
+            System.out.println("5. Update low stock alert level");
+            System.out.println("6. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    // View medication inventory
+                    List<Medicine> medicines = inventoryManager.getMedicines();
+                    for (Medicine medicine : medicines) {
+                        System.out.println(medicine);
+                    }
+                    break;
+
+                case 2:
+                    // Add medication
+                    try {
+                        System.out.print("Enter medicine name: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Enter stock: ");
+                        int stock = scanner.nextInt();
+                        System.out.print("Enter low stock alert level: ");
+                        int lowStockAlertLevel = scanner.nextInt();
+
+                        if (inventoryManager.addMedicine(name, stock, lowStockAlertLevel)) {
+                            System.out.println("New medication: " + name + " with stock level: " + stock + " and low stock alert level: " + lowStockAlertLevel + " added");
+                            break;
+                        }
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please enter numeric values for stock and low stock alert level.");
+                        scanner.nextLine(); // Consume the invalid input
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("An unexpected error occurred: " + e.getMessage());
+                        break;
+                    }
+
+                case 3:
+                    // Remove medication
+                    System.out.print("Enter medicine name to remove: ");
+                    String removeName = scanner.nextLine();
+                    inventoryManager.removeMedicine(removeName);
+                    break;
+
+                case 4:
+                    // Update medication stock
+                    System.out.print("Enter medicine name to update stock: ");
+                    String updateStockName = scanner.nextLine();
+                    System.out.print("Enter new stock level: ");
+                    int newStock = scanner.nextInt();
+                    scanner.nextLine();
+                    inventoryManager.updateStock(updateStockName, newStock);
+                    break;
+
+                case 5:
+                    // Update low stock alert level
+                    System.out.print("Enter medicine name to update alert level: ");
+                    String updateAlertName = scanner.nextLine();
+                    System.out.print("Enter new low stock alert level: ");
+                    int newAlertLevel = scanner.nextInt();
+                    scanner.nextLine();
+                    Medicine medicineToUpdate = inventoryManager.getMedicineByName(updateAlertName);
+                    if (medicineToUpdate != null) {
+                        medicineToUpdate.setLowStockAlertLevel(newAlertLevel);
+                        inventoryManager.saveMedicinesToCSV(medicinePath);
+                        System.out.println("Low stock alert level updated successfully for: " + updateAlertName);
+                    } else {
+                        System.out.println("Medicine not found: " + updateAlertName);
+                    }
+                    break;
+
+                case 6:
+                    // Exit
+                    System.out.println("Exiting Medication Inventory Management.");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
         }
     }
 
     //approveReplenishmentRequests
     public void approveReplenishmentRequests() {
         System.out.println("Approving replenishment requests...");
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/hms/data/Pending_Replenishment_Requests.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(replenishmentPath))) {
             List<String> approvedRequests = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -223,6 +317,7 @@ public class Administrator extends User {
                     System.out.println("Request not approved.");
                 }
             }
+
             // Write approved requests to final inventory and update stock accordingly
             for (String request : approvedRequests) {
                 String[] requestDetails = request.split(",");
@@ -242,7 +337,7 @@ public class Administrator extends User {
             System.out.println("\nAdministrator Menu:");
             System.out.println("1. View and Manage Hospital Staff");
             System.out.println("2. View Appointments Details");
-            System.out.println("3. View Medication Inventory");
+            System.out.println("3. View and Manage Medication Inventory");
             System.out.println("4. Approve Replenishment Requests");
             System.out.println("5. Change Password");
             System.out.println("6. Logout");
@@ -259,7 +354,7 @@ public class Administrator extends User {
                     viewAppointmentsDetails();
                     break;
                 case 3:
-                    viewMedicationInventory();
+                    manageMedicationInventory();
                     break;
                 case 4:
                     approveReplenishmentRequests();
