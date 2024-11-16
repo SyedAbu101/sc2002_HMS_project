@@ -2,13 +2,16 @@ package hms.appointment;
 
 public class AppointmentOutcomeRecord {
     private String appointmentId;
+    private String patientId;
     private String serviceType;
     private String medicationName;
     private String notes;
+    private String prescriptionStatus;
 
     //constructor
-    public AppointmentOutcomeRecord(String appointmentId, String serviceType, String medicationName, String notes) {
+    public AppointmentOutcomeRecord(String appointmentId, String patientId, String serviceType, String medicationName, String notes) {
         this.appointmentId = appointmentId;
+        this.patientId = patientId;
         this.serviceType = serviceType;
         this.medicationName = medicationName;
         this.notes = notes;
@@ -32,11 +35,15 @@ public class AppointmentOutcomeRecord {
     }
 
     public String getPatientId() {
-        //need to update with real logic
-    	return "";
+    	return patientId;
     }
 
+    //set method
+    public void setPrescriptionStatus (String status) {
+    	this.prescriptionStatus = status;
+    }
+    
     public String toString() {
-        return "Appointment ID: " + appointmentId + ", Service Type: " + serviceType + ", Medication: " + medicationName + ", Notes: " + notes;
+        return "Appointment ID: " + appointmentId + ", Service Type: " + serviceType + ", Medication: " + medicationName + ", Prescription Status: " + prescriptionStatus + ", Notes: " + notes;
     }
 }
