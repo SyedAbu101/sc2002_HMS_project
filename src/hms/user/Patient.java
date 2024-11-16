@@ -147,8 +147,13 @@ public class Patient extends User {
     public void viewPastAppointmentOutcomes() {
         System.out.println("Past Appointment Outcomes:");
         List<AppointmentOutcomeRecord> outcomes = appointmentManager.getAppointmentOutcomesByPatientId(id);
-        for (AppointmentOutcomeRecord outcome : outcomes) {
-            System.out.println(outcome);
+        if (outcomes.isEmpty()) {
+            System.out.println("No past appointment outcomes available.");
+        } 
+        else {
+            for (AppointmentOutcomeRecord outcome : outcomes) {
+                System.out.println(outcome);
+            }
         }
     }
 
@@ -220,4 +225,3 @@ public class Patient extends User {
         }
     } //showMenu method ends here
 }
-
