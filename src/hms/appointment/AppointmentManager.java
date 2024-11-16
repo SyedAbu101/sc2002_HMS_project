@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class AppointmentManager implements AppointmentService {
     private static List<Appointment> appointments;
     public static List<MedicalRecord> medicalRecords;
-    private static List<AppointmentOutcomeRecord> appointmentOutcomes;
+    public static List<AppointmentOutcomeRecord> appointmentOutcomes;
 
 
     //constructor
@@ -144,7 +144,7 @@ public class AppointmentManager implements AppointmentService {
     public void recordAppointmentOutcome(String appointmentId, String serviceType, String medicationName, String notes) {
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId().equals(appointmentId) && appointment.getStatus().equals("confirmed")) {
-                AppointmentOutcomeRecord outcome = new AppointmentOutcomeRecord(appointmentId, serviceType, medicationName, notes);
+                AppointmentOutcomeRecord outcome = new AppointmentOutcomeRecord(appointmentId, appointment.getPatientId(), serviceType, medicationName, notes);
                 appointmentOutcomes.add(outcome);
                 appointment.setStatus("completed");
                 System.out.println("Appointment outcome recorded successfully.");
@@ -153,7 +153,7 @@ public class AppointmentManager implements AppointmentService {
         }
         System.out.println("Appointment not found or cannot record outcome.");
     }
-
+    
     //getMedicalRecordByPatientId method
     public MedicalRecord getMedicalRecordByPatientId(String patientId) {
         for (MedicalRecord record : medicalRecords) {
@@ -171,6 +171,17 @@ public class AppointmentManager implements AppointmentService {
                 .collect(Collectors.toList());
     }
 
+  //getAppointmentOutcomeByAppointmentId method
+    public AppointmentOutcomeRecord getAppointmentOutcomeByAppointmentId(String appointmentId) {
+        for (AppointmentOutcomeRecord record : appointmentOutcomes) {
+            if (record.getAppointmentId().equals(appointmentId)) {
+                return record;
+            }
+        }
+        System.out.println("No outcome record found for Appointment ID: " + appointmentId);
+        return null;
+    }
+    
     //viewAppointmentStatus method
     public void updateAppointmentStatus(String appointmentId, String newStatus) {
         for (Appointment appointment : appointments) {
@@ -198,5 +209,3 @@ interface AppointmentService {
     List<Appointment> getAppointmentsByDoctorId(String doctorId);
     List<Appointment> getAvailableAppointments();
 }
-
-
