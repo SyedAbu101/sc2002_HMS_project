@@ -194,4 +194,3 @@ public class Doctor extends User {
         }
     } //showMenu method ends here
 }
-
