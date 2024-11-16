@@ -7,6 +7,7 @@ import hms.inventory.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -148,10 +149,10 @@ public class Administrator extends User {
                     break;
 
                 case "list":
-                    System.out.println("Listing all staff members:");
+                	System.out.println("Listing all staff members:");
                     for (User user : User.getAllUsers().values()) {
                         if(!user.role.equalsIgnoreCase("patient")) {
-                            System.out.println(user.toCSV());
+                            System.out.println("ID: " + user.id + ", Name: " + user.name + ", Role: " + user.role);
                         }
                     }
                     break;
@@ -207,7 +208,31 @@ public class Administrator extends User {
     //approveReplenishmentRequests
     public void approveReplenishmentRequests() {
         System.out.println("Approving replenishment requests...");
-        //need to add logic to approve or disapprove replenishment requests
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/hms/data/Pending_Replenishment_Requests.csv"))) {
+            List<String> approvedRequests = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("Pending Replenishment Request: " + line);
+                System.out.print("Approve this request? (yes/no): ");
+                Scanner scanner = new Scanner(System.in);
+                String response = scanner.nextLine().trim().toLowerCase();
+                if (response.equals("yes")) {
+                    approvedRequests.add(line);
+                    System.out.println("Request approved.");
+                } else {
+                    System.out.println("Request not approved.");
+                }
+            }
+            // Write approved requests to final inventory and update stock accordingly
+            for (String request : approvedRequests) {
+                String[] requestDetails = request.split(",");
+                String medicineName = requestDetails[1];
+                int quantity = Integer.parseInt(requestDetails[2]);
+                inventoryManager.updateStock(medicineName, inventoryManager.getMedicineByName(medicineName).getStock() + quantity);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading replenishment requests: " + e.getMessage());
+        }
     }
 
     //showMenu method
