@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import hms.medical.MedicalRecord;
-import hms.user.Patient;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +13,7 @@ public class AppointmentManager implements AppointmentService {
     private static List<Appointment> appointments;
     public static List<MedicalRecord> medicalRecords;
     public static List<AppointmentOutcomeRecord> appointmentOutcomes;
-
-
+    
     //constructor
     public AppointmentManager() {
         appointments = new ArrayList<>();
@@ -37,12 +34,14 @@ public class AppointmentManager implements AppointmentService {
         return false;
     }
 
+    //getRequestedAppointmentsByDoctorId method
     public List<Appointment> getRequestedAppointmentsByDoctorId(String doctorId) {
         return appointments.stream()
                 .filter(appointment -> appointment.getDoctorId().equals(doctorId) && appointment.getStatus().equals("requested"))
                 .collect(Collectors.toList());
     }
 
+    //getAppointmentById method
     public Appointment getAppointmentById(String appointmentId) {
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId().equals(appointmentId)) {
