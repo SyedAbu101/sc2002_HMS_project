@@ -2,6 +2,8 @@ package hms.user;
 
 import hms.appointment.*;
 import hms.medical.MedicalRecord;
+
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -129,68 +131,80 @@ public class Doctor extends User {
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nDoctor Menu:");
-            System.out.println("1. View Patient Medical Records");
-            System.out.println("2. Update Patient Medical Records");
-            System.out.println("3. View Personal Schedule");
-            System.out.println("4. Set Availability for Appointments");
-            System.out.println("5. Accept or Decline Appointment Requests");
-            System.out.println("6. View Upcoming Appointments");
-            System.out.println("7. Record Appointment Outcome");
-            System.out.println("8. Change Password");
-            System.out.println("9. Logout");
-            System.out.print("Enter your choice: ");
+            try {
+                System.out.println("\nDoctor Menu:");
+                System.out.println("1. View Patient Medical Records");
+                System.out.println("2. Update Patient Medical Records");
+                System.out.println("3. View Personal Schedule");
+                System.out.println("4. Set Availability for Appointments");
+                System.out.println("5. Accept or Decline Appointment Requests");
+                System.out.println("6. View Upcoming Appointments");
+                System.out.println("7. Record Appointment Outcome");
+                System.out.println("8. Change Password");
+                System.out.println("9. Logout");
+                System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); 
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a number from the menu.");
+                    scanner.next(); // Clear invalid input
+                    continue;
+                }
 
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter Patient ID to view medical records: ");
-                    String patientId = scanner.nextLine();
-                    viewPatientMedicalRecord(patientId);
-                    break;
-                case 2:
-                    updatePatientMedicalRecord();
-                    break;
-                case 3:
-                    viewPersonalSchedule();
-                    break;
-                case 4:
-                    System.out.print("Enter date for availability (YYYY-MM-DD): ");
-                    String date = scanner.nextLine();
-                    System.out.print("Enter time for availability (HH:MM): ");
-                    String time = scanner.nextLine();
-                    setAvailability(date, time);
-                    break;
-                case 5:
-                     manageRequestedAppointments();
-                    break;
-                case 6:
-                    viewUpcomingAppointments();
-                    break;
-                case 7:
-                    System.out.print("Enter Appointment ID to record outcome: ");
-                    String appointmentId = scanner.nextLine();
-                    System.out.print("Enter type of service provided: ");
-                    String serviceType = scanner.nextLine();
-                    System.out.print("Enter medication name (if any): ");
-                    String medicationName = scanner.nextLine();
-                    System.out.print("Enter consultation notes: ");
-                    String notes = scanner.nextLine();
-                    recordAppointmentOutcome(appointmentId, serviceType, medicationName, notes);
-                    break;
-                case 8:
-                    System.out.print("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    changePassword(newPassword);
-                    break;
-                case 9:
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Patient ID to view medical records: ");
+                        String patientId = scanner.nextLine();
+                        viewPatientMedicalRecord(patientId);
+                        break;
+                    case 2:
+                        updatePatientMedicalRecord();
+                        break;
+                    case 3:
+                        viewPersonalSchedule();
+                        break;
+                    case 4:
+                        System.out.print("Enter date for availability (YYYY-MM-DD): ");
+                        String date = scanner.nextLine();
+                        System.out.print("Enter time for availability (HH:MM): ");
+                        String time = scanner.nextLine();
+                        setAvailability(date, time);
+                        break;
+                    case 5:
+                        manageRequestedAppointments();
+                        break;
+                    case 6:
+                        viewUpcomingAppointments();
+                        break;
+                    case 7:
+                        System.out.print("Enter Appointment ID to record outcome: ");
+                        String appointmentId = scanner.nextLine();
+                        System.out.print("Enter type of service provided: ");
+                        String serviceType = scanner.nextLine();
+                        System.out.print("Enter medication name (if any): ");
+                        String medicationName = scanner.nextLine();
+                        System.out.print("Enter consultation notes: ");
+                        String notes = scanner.nextLine();
+                        recordAppointmentOutcome(appointmentId, serviceType, medicationName, notes);
+                        break;
+                    case 8:
+                        System.out.print("Enter new password: ");
+                        String newPassword = scanner.nextLine();
+                        changePassword(newPassword);
+                        break;
+                    case 9:
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number from the menu.");
+                scanner.nextLine(); // Clear invalid input
             }
         }
-    } //showMenu method ends here
+    } // showMenu method ends here
+
 }

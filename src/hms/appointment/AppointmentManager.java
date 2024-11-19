@@ -104,25 +104,6 @@ public class AppointmentManager implements AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    //getFutureAppointmentsByDoctorId method
-    public List<Appointment> getFutureAppointmentsByDoctorId(String doctorId) {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        return appointments.stream()
-                .filter(appointment -> appointment.getDoctorId().equals(doctorId))
-                .filter(appointment -> {
-
-                    // Parse date and time strings
-                    LocalDate appointmentDate = LocalDate.parse(appointment.getDate(), dateFormatter);
-                    LocalTime appointmentTime = LocalTime.parse(appointment.getTime(), timeFormatter);
-
-                    // Combine appointment date and time to form a LocalDateTime for comparison
-                    LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, appointmentTime);
-                    return appointmentDateTime.isAfter(now);
-                })
-                .collect(Collectors.toList());
-    }
 
     //getAvailableAppointments method
     public List<Appointment> getAvailableAppointments() {
@@ -168,17 +149,6 @@ public class AppointmentManager implements AppointmentService {
         return appointmentOutcomes.stream()
                 .filter(outcome -> outcome.getPatientId().equals(patientId))
                 .collect(Collectors.toList());
-    }
-
-  //getAppointmentOutcomeByAppointmentId method
-    public AppointmentOutcomeRecord getAppointmentOutcomeByAppointmentId(String appointmentId) {
-        for (AppointmentOutcomeRecord record : appointmentOutcomes) {
-            if (record.getAppointmentId().equals(appointmentId)) {
-                return record;
-            }
-        }
-        System.out.println("No outcome record found for Appointment ID: " + appointmentId);
-        return null;
     }
     
     //viewAppointmentStatus method

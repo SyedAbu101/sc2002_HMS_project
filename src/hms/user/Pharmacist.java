@@ -4,6 +4,7 @@ import hms.inventory.*;
 import hms.appointment.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -78,57 +79,75 @@ public class Pharmacist extends User {
         }
     }
 
-    //showMenu method, might need to add an option for changing password after login 
+    //showMenu method, might need to add an option for changing password after login
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nPharmacist Menu:");
-            System.out.println("1. View Appointment Outcome Record");
-            System.out.println("2. Update Prescription Status");
-            System.out.println("3. View Medication Inventory");
-            System.out.println("4. Submit Replenishment Request");
-            System.out.println("5. Change Password");
-            System.out.println("6. Logout");
-            System.out.print("Enter your choice: ");
+            try {
+                System.out.println("\nPharmacist Menu:");
+                System.out.println("1. View Appointment Outcome Record");
+                System.out.println("2. Update Prescription Status");
+                System.out.println("3. View Medication Inventory");
+                System.out.println("4. Submit Replenishment Request");
+                System.out.println("5. Change Password");
+                System.out.println("6. Logout");
+                System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a number from the menu.");
+                    scanner.next(); // Clear invalid input
+                    continue;
+                }
 
-            switch (choice) {
-                case 1:
-                	System.out.print("Enter Appointment ID to view outcome record: ");
-                    String appointmentId = scanner.nextLine();
-                    viewAppointmentOutcomeRecord(appointmentId);
-                    break;
-                case 2:
-                    System.out.print("Enter Appointment ID to update prescription status: ");
-                    appointmentId = scanner.nextLine();
-                    System.out.print("Enter new status (e.g., dispensed): ");
-                    String status = scanner.nextLine();
-                    updatePrescriptionStatus(appointmentId, status);
-                    break;
-                case 3:
-                    viewInventory();
-                    break;
-                case 4:
-                    System.out.print("Enter medicine name for replenishment: ");
-                    String medicineName = scanner.nextLine();
-                    System.out.print("Enter quantity: ");
-                    int quantity = scanner.nextInt();
-                    scanner.nextLine();
-                    submitReplenishmentRequest(medicineName, quantity);
-                    break;
-                case 5:
-                    System.out.print("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    changePassword(newPassword);
-                    break;
-                case 6:
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Appointment ID to view outcome record: ");
+                        String appointmentId = scanner.nextLine();
+                        viewAppointmentOutcomeRecord(appointmentId);
+                        break;
+                    case 2:
+                        System.out.print("Enter Appointment ID to update prescription status: ");
+                        appointmentId = scanner.nextLine();
+                        System.out.print("Enter new status (e.g., dispensed): ");
+                        String status = scanner.nextLine();
+                        updatePrescriptionStatus(appointmentId, status);
+                        break;
+                    case 3:
+                        viewInventory();
+                        break;
+                    case 4:
+                        System.out.print("Enter medicine name for replenishment: ");
+                        String medicineName = scanner.nextLine();
+                        System.out.print("Enter quantity: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Invalid input. Please enter a valid number for quantity.");
+                            scanner.next(); // Clear invalid input
+                            continue;
+                        }
+
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine();
+                        submitReplenishmentRequest(medicineName, quantity);
+                        break;
+                    case 5:
+                        System.out.print("Enter new password: ");
+                        String newPassword = scanner.nextLine();
+                        changePassword(newPassword);
+                        break;
+                    case 6:
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number from the menu.");
+                scanner.nextLine(); // Clear invalid input
             }
         }
-    } //showMenu ends here
+    }//showMenu ends here
 } 

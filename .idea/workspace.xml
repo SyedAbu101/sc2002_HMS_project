@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="2f5904cb-8c19-4d97-b524-ff331dbf13ce" name="Changes" comment="Removed not needed Replenishment_Requests.csv and modifed one Administrator.java method to be public">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/appointment/AppointmentManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/appointment/AppointmentManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/user/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Administrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/user/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/user/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Patient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/hms/user/Pharmacist.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +33,12 @@
     &quot;assignee&quot;: &quot;Limzhenghao&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/SyedAbu101/sc2002_HMS_project.git&quot;,
-    &quot;accountId&quot;: &quot;68f2d40f-6b81-4f94-8457-f55708826e29&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/SyedAbu101/sc2002_HMS_project.git",
+    "accountId": "ef980f42-bb0a-4944-a7fb-f3dcab803168"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>

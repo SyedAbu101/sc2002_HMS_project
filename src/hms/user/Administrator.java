@@ -381,42 +381,53 @@ public class Administrator extends User {
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nAdministrator Menu:");
-            System.out.println("1. View and Manage Hospital Staff");
-            System.out.println("2. View Appointments Details");
-            System.out.println("3. View and Manage Medication Inventory");
-            System.out.println("4. Approve Replenishment Requests");
-            System.out.println("5. Change Password");
-            System.out.println("6. Logout");
-            System.out.print("Enter your choice: ");
+            try {
+                System.out.println("\nAdministrator Menu:");
+                System.out.println("1. View and Manage Hospital Staff");
+                System.out.println("2. View Appointments Details");
+                System.out.println("3. View and Manage Medication Inventory");
+                System.out.println("4. Approve Replenishment Requests");
+                System.out.println("5. Change Password");
+                System.out.println("6. Logout");
+                System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a number from the menu.");
+                    scanner.next(); // Clear invalid input
+                    continue;
+                }
 
-            switch (choice) {
-                case 1:
-                    manageStaff();
-                    break;
-                case 2:
-                    viewAppointmentsDetails();
-                    break;
-                case 3:
-                    manageMedicationInventory();
-                    break;
-                case 4:
-                    approveReplenishmentRequests();
-                    break;
-                case 5:
-                    System.out.print("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    changePassword(newPassword);
-                    break;
-                case 6:
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+
+                switch (choice) {
+                    case 1:
+                        manageStaff();
+                        break;
+                    case 2:
+                        viewAppointmentsDetails();
+                        break;
+                    case 3:
+                        manageMedicationInventory();
+                        break;
+                    case 4:
+                        approveReplenishmentRequests();
+                        break;
+                    case 5:
+                        System.out.print("Enter new password: ");
+                        String newPassword = scanner.nextLine();
+                        changePassword(newPassword);
+                        break;
+                    case 6:
+                        System.out.println("Logging out...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number from the menu.");
+                scanner.nextLine(); // Clear invalid input
             }
         }
-    } //showMenu method ends here
+    } // showMenu method ends here
 }
